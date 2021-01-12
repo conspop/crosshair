@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import axios from 'axios'
+import './App.css'
 
-function App() {
+export default function App() {
+  
+  const [gameOn, setGameOn] = useState(false)
+  const [hand, setHand] = useState('')
+  const [board, setBoard] = useState('')
+
+  const refreshState = (data) => {
+    console.log('refreshing!')
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <CreateOrJoinGame refreshState={refreshState} />
+  )
+} 
+
+function CreateOrJoinGame({refreshState}) {
+  const [username, setUsername] = useState('')
+
+  const createGame = () => {
+    axios.post('/games', {
+      username
+    })
+    .then(res => refreshState(res.data))
+    .catch(err => console.log(err.message))
+  }
+
+  return (
+    <>
+      <div>
+        <label>Name: </label>
+        <input type="text" onChange={event => setUsername(event.target.value)} />
+        <button onClick={createGame}>Create Game</button>
+      </div>
+      <div>
+        <label>Name: </label>
+        <input />
+        <label>Game Id: </label>
+        <input />
+        <button>Join Game</button>
+      </div>
+      
+      
+    </>
+  )
 }
 
-export default App;
+// function GameBoard() {
+//   return (
+
+//   )
+// }

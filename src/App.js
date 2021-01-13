@@ -74,13 +74,46 @@ export default function App() {
 
   const playCard = (index) => {
     if (selected || selected === 0) {
+      const gridMap = {
+        0: 24,
+        1: 19,
+        2: 14,
+        3: 9,
+        4: 4,
+        5: 23,
+        6: 18,
+        7: 13,
+        8: 8,
+        9: 3,
+        10: 22,
+        11: 17,
+        12: 12,
+        13: 7,
+        14: 2,
+        15: 21,
+        16: 16,
+        17: 11,
+        18: 6,
+        19: 1,
+        20: 20,
+        21: 15,
+        22: 10,
+        23: 5,
+        24: 0,
+      }
+      
       const oldHand = [...hand]
       const handCopy = [...hand]
       const playedCard = handCopy.splice(selected,1)
 
       const oldBoard = [...board]
-      const boardCopy = [...board]
-      boardCopy[index] = playedCard[0]
+      let boardCopy = [...board]
+      if (!player) {
+        boardCopy[gridMap[index]] = playedCard[0] 
+      } else {
+        boardCopy[index] = playedCard[0] 
+      }
+      
 
       setHand(handCopy)
       setBoard(boardCopy)
@@ -92,6 +125,7 @@ export default function App() {
         [player ? 'playerOneHand' : 'playerTwoHand']:handCopy,
         board:boardCopy,
       })
+      .then(res => console.log(res))
       .catch(err => {
         console.log(err.message)
         setHand(oldHand)

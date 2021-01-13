@@ -97,7 +97,6 @@ async function joinGame(req, res) {
 async function playCard(req, res) {
   const filter = {gameId: req.body.gameId}
   let game = await Game.findOne(filter)
-  console.log(req.body)
   if (req.body.playerOneHand) {
     game.set({playerOneHand: req.body.playerOneHand})
   } else if (req.body.playerTwoHand) {
@@ -106,6 +105,7 @@ async function playCard(req, res) {
   game.set({board: req.body.board})
   game.turn = !game.turn
   await game.save()
+  res.json(game)
 }
 
 async function refresh(req, res) {

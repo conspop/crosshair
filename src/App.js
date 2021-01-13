@@ -4,27 +4,52 @@ import './App.css'
 
 export default function App() {
   
-  const [gameOn, setGameOn] = useState(false)
+  const [name, setName] = useState('')
+  const [gameId, setGameId] = useState('')
+  const [playerOneName, setPlayerOneName] = useState('')
+  const [playerTwoName, setPlayerTwoName] = useState('')
+  const [turn, setTurn] = useState('')
   const [hand, setHand] = useState('')
   const [board, setBoard] = useState('')
 
-  const refreshState = (data) => {
-    console.log('refreshing!')
+  const putNameInState = (name) => {
+    setName(name)
+  }
+
+  const newGame = (data) => {
+    setPlayerOneName(data.playerOneName)
+    setPlayerTwoName(data.playerTwoName)
+    setHand(data.playerOneHand)
+    setBoard(data.board)
+    setGameId(data.gameId)
   }
   
   return (
-    <CreateOrJoinGame refreshState={refreshState} />
+    gameId === ''
+    ?
+    <CreateOrJoinGame 
+      newGame={newGame} 
+      putNameInState={putNameInState}
+    />
+    :
+    <Game 
+      hand={hand}
+      board={board}
+    />
   )
 } 
 
-function CreateOrJoinGame({refreshState}) {
+function CreateOrJoinGame({newGame, putNameInState}) {
   const [username, setUsername] = useState('')
 
   const createGame = () => {
+    putNameInState(username)
     axios.post('/games', {
       username
     })
-    .then(res => refreshState(res.data))
+    .then(res => {
+      newGame(res.data)
+    })
     .catch(err => console.log(err.message))
   }
 
@@ -42,14 +67,25 @@ function CreateOrJoinGame({refreshState}) {
         <input />
         <button>Join Game</button>
       </div>
-      
-      
     </>
   )
 }
 
-// function GameBoard() {
-//   return (
-
-//   )
-// }
+function Game({ hand, board}) {
+  return (
+    <>
+      <div>
+        Hand:
+        <ul>
+          {hand.map(card => <li>{card.number}/{card.suit}</li>)}
+        </ul>
+      </div>
+      <div>
+        Board:
+        <ul>
+          {board.map(card => <li>{card.number}/{card.suit}</li>)}
+        </ul>
+      </div>
+    </>
+  )
+}

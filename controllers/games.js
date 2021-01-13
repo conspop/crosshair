@@ -9,43 +9,66 @@ function show() {
   pass
 }
 
-function newGame(req, res) {
-  createNewGame(req.body.username)
-  dealHands()
+async function newGame(req, res) {
+  const shuffledDeck = createShuffledDeck()
+  
+  const gameData = await Game.create({
+    gameId: createGameId(), 
+    playerOneName: req.body.username,
+    playerOneHand: dealCards(shuffledDeck, 12),
+    playerTwoHand: dealCards(shuffledDeck, 12),
+    board: dealCards(shuffledDeck, 25)
+  })
 
-  async function createNewGame(username) {
+  res.json(gameData)
+
+  function createGameId() {
     let gameId = ''
     while (gameId.length < 5) {
       gameId += (Math.floor(Math.random() * 9) + 1)
     }
-    await Game.create({
-      gameId, 
-      playerOneName: username
-    })
+    return gameId
   }
 
-  async function dealHands() {
-    const deck = shuffleDeck()
-
-    function shuffleDeck() {
-      
-      console.log(createUnshuffledDeck())
-
-      function createUnshuffledDeck() {
-        const suits = ['S', 'C', 'H', 'D']
-        const unshuffledDeck = []
-        for (let suit = 0; suit < suits.length; suit++) {
-          for (let number = 1; number <= 13; number++) {
-            unshuffledDeck.push({
-              suit: suits[suit],
-              number
-            })
-          }
-        }
-        return unshuffledDeck     
-      } 
-
+  function dealCards(deck, numberOfCards) {
+    let dealtCards = []
+    for (let i = 1; i <= numberOfCards; i++) {
+      dealtCards.push(deck.pop())
     }
+    return dealtCards
+  }
+
+  function createShuffledDeck() {
+    const unshuffledDeck = createUnshuffledDeck()
+    const shuffledDeck = shuffle(unshuffledDeck)
+    return shuffledDeck
+    
+    function createUnshuffledDeck() {
+      const suits = ['S', 'C', 'H', 'D']
+      const unshuffledDeck = []
+      for (let suit = 0; suit < suits.length; suit++) {
+        for (let number = 1; number <= 13; number++) {
+          unshuffledDeck.push({
+            suit: suits[suit],
+            number
+          })
+        }
+      }
+      return unshuffledDeck     
+    } 
+    
+    //Fisher-Yates Algorithm
+    function shuffle(deck) {
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * i)
+        const temp = deck[i]
+        deck[i] = deck[j]
+        deck[j] = temp
+      }
+      return deck
+    }
+
+    
 
   }
 }

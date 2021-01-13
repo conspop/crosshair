@@ -1,14 +1,10 @@
 const Game = require('../models/game')
 
 module.exports = {
-  show,
   newGame,
-  update
+  joinGame,
+  playCard
 };
-
-function show() {
-  pass
-}
 
 async function newGame(req, res) {
   const shuffledDeck = createShuffledDeck()
@@ -68,14 +64,31 @@ async function newGame(req, res) {
       }
       return deck
     }
-
-    
-
   }
 }
 
-async function update(req, res) {
-  const filter = {gameId: req.params.gameId}
+async function joinGame(req, res) {
+  const {gameId, username} = req.body
+  const game = await Game.findOne({gameId})
+  console.log(game)
+  if (game.playerOneName === username || game.playerTwoName === username) {
+    console.log('You are one of the existing players')
+    res.json(game)
+  } else if (game.playerOneName && game.playerTwoName) {
+    console.log('Messed up')
+    res.status(400).json({
+      message: 'This username is not in the gameId you provided.'
+    })
+  } else {
+    console.log('Creating player 2')
+    game.playerTwoName = req.body.username
+    await game.save()
+    res.json(game)
+  }
+}
+
+async function playCard(req, res) {
+  const filter = {gameId: req.body.gameId}
   let game = await Game.findOne(filter)
   console.log((req.body.playerOneHand))
   if (req.body.playerOneHand) {
@@ -87,6 +100,8 @@ async function update(req, res) {
   game.turn = req.body.turn
   await game.save()
 }
+
+
 
 
 

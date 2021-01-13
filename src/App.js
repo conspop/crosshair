@@ -28,6 +28,7 @@ const numberMap = {
 export default function App() {
   
   const [name, setName] = useState('')
+  const [player, setPlayer] = useState('')
   const [gameId, setGameId] = useState('')
   const [playerOneName, setPlayerOneName] = useState('')
   const [playerTwoName, setPlayerTwoName] = useState('')
@@ -40,13 +41,25 @@ export default function App() {
     setName(name)
   }
 
-  const newGame = (data) => {
-    setPlayerOneName(data.playerOneName)
-    setPlayerTwoName(data.playerTwoName)
-    setHand(data.playerOneHand)
-    setBoard(data.board)
+  const joinGame = (data, name) => {
+    const setOthers = () => {
+      setPlayerOneName(data.playerOneName)
+      setPlayerTwoName(data.playerTwoName)
+      console.log(name)
+      console.log(data.playerOneName)
+      if (name === data.playerOneName) {
+        setPlayer('playerOne')
+        setHand(data.playerOneHand)
+      } else {
+        setPlayer('playerTwo')
+        setHand(data.playerTwoHand)
+      }
+      setBoard(data.board)
+      setTurn(true)
+    }
+    setName(name)
+    setOthers()
     setGameId(data.gameId)
-    setTurn(true)
   }
 
   const selectCard = (index) => {
@@ -73,7 +86,8 @@ export default function App() {
 
       console.log(turn)
 
-      axios.put(`/games/${gameId}`,{
+      axios.put(`/games/play-card`,{
+        gameId,
         [name === playerOneName ? 'playerOneHand' : 'playerTwoHand']:handCopy,
         board:boardCopy,
         turn: !turn
@@ -90,11 +104,14 @@ export default function App() {
     gameId === ''
     ?
     <CreateOrJoinGame 
-      newGame={newGame} 
       putNameInState={putNameInState}
+      joinGame={joinGame}
     />
     :
     <Game 
+      gameId={gameId}
+      name={name}
+      player={player}
       hand={hand}
       board={board}
       selected={selected}
@@ -104,46 +121,70 @@ export default function App() {
   )
 } 
 
-function CreateOrJoinGame({newGame, putNameInState}) {
+function CreateOrJoinGame({joinGame, putNameInState}) {
   const [username, setUsername] = useState('')
+  const [gameId, setGameId] = useState('')
 
   const createGame = () => {
-    putNameInState(username)
     axios.post('/games', {
       username
     })
     .then(res => {
-      newGame(res.data)
+      joinGame(res.data, username)
+    })
+    .catch(err => console.log(err.message))
+  }
+
+  const handleJoinGame = () => {
+    axios.put('/games/join-game', {
+      username,
+      gameId
+    })
+    .then(res => {
+      joinGame(res.data, username)
     })
     .catch(err => console.log(err.message))
   }
 
   return (
-    <>
+    <div className='create-or-join-container'>
       <div>
         <label>Name: </label>
         <input type="text" onChange={event => setUsername(event.target.value)} />
-        <button onClick={createGame}>Create Game</button>
       </div>
+      <button onClick={createGame}>Create New Game</button>
       <div>
-        <label>Name: </label>
-        <input />
         <label>Game Id: </label>
-        <input />
-        <button>Join Game</button>
+        <input type="text" onChange={event => setGameId(event.target.value)}/>
+        <button onClick={handleJoinGame}>Join Existing Game</button>
       </div>
-    </>
+    </div>
   )
 }
 
-function Game({ hand, board, selected, selectCard, playCard}) {
+function Game({ gameId, name, player, hand, board, selected, selectCard, playCard}) {
+  let orientedBoard
+  if (player === 'playerTwo') {
+    orientedBoard = [
+      board[24], board[19], board[14], board[9], board[4],
+      board[23], board[18], board[13], board[8], board[3],
+      board[22], board[17], board[12], board[7], board[2],
+      board[21], board[16], board[11], board[6], board[1],
+      board[20], board[15], board[10], board[5], board[0]
+    ]
+  } else {
+    orientedBoard = [...board]
+  }
+
+  console.log(orientedBoard)
 
   return (
     <div className='game-container'>
+      <div className='game-id'>{gameId} | {name}</div>
       <div className='title'>Crosshair</div>
       <div className='message'>Seb's Turn</div>
       <div className='board'>
-        {board.map((card, index) => {
+        {orientedBoard.map((card, index) => {
           return <Card 
             card={card} 
             index={index} 

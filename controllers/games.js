@@ -2,7 +2,8 @@ const Game = require('../models/game')
 
 module.exports = {
   show,
-  newGame
+  newGame,
+  update
 };
 
 function show() {
@@ -71,6 +72,20 @@ async function newGame(req, res) {
     
 
   }
+}
+
+async function update(req, res) {
+  const filter = {gameId: req.params.gameId}
+  let game = await Game.findOne(filter)
+  console.log((req.body.playerOneHand))
+  if (req.body.playerOneHand) {
+    game.set({playerOneHand: req.body.playerOneHand})
+  } else if (req.body.playerTwoHand) {
+    game.playerTwoHand.set(req.body.playerTwoHand)
+  }
+  game.set({board: req.body.board})
+  game.turn = req.body.turn
+  await game.save()
 }
 
 

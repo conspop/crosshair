@@ -13,7 +13,8 @@ const gameSchema = new Schema({
   playerTwoName: String,
   playerOneHand: [cardSchema],
   playerTwoHand: [cardSchema],
-  board: [cardSchema]
+  board: [cardSchema],
+  turn: Boolean
 });
 
 module.exports = mongoose.model('Game', gameSchema);

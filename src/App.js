@@ -46,6 +46,7 @@ export default function App() {
     setHand(data.playerOneHand)
     setBoard(data.board)
     setGameId(data.gameId)
+    setTurn(true)
   }
 
   const selectCard = (index) => {
@@ -58,13 +59,30 @@ export default function App() {
 
   const playCard = (index) => {
     if (selected) {
+      const oldHand = [...hand]
       const handCopy = [...hand]
-      const boardCopy = [...board]
       const playedCard = handCopy.splice(selected,1)
+
+      const oldBoard = [...board]
+      const boardCopy = [...board]
       boardCopy[index] = playedCard[0]
+
       setHand(handCopy)
       setBoard(boardCopy)
       setSelected('')
+
+      console.log(turn)
+
+      axios.put(`/games/${gameId}`,{
+        [name === playerOneName ? 'playerOneHand' : 'playerTwoHand']:handCopy,
+        board:boardCopy,
+        turn: !turn
+      })
+      .catch(err => {
+        console.log(err.message)
+        setHand(oldHand)
+        setBoard(oldBoard)
+      })
     }
   }
   

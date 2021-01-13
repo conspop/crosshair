@@ -10,12 +10,17 @@ module.exports = {
 async function newGame(req, res) {
   const shuffledDeck = createShuffledDeck()
   
+  const board = Array(25).fill('')
+  board[12] = shuffledDeck.pop()
+
+  console.log(board)
+
   const gameData = await Game.create({
     gameId: createGameId(), 
     playerOneName: req.body.username,
     playerOneHand: dealCards(shuffledDeck, 12),
     playerTwoHand: dealCards(shuffledDeck, 12),
-    board: dealCards(shuffledDeck, 25),
+    board,
     turn: true
   })
 

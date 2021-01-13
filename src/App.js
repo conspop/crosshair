@@ -58,7 +58,7 @@ export default function App() {
   }
 
   const playCard = (index) => {
-    if (selected) {
+    if (selected || selected === 0) {
       const oldHand = [...hand]
       const handCopy = [...hand]
       const playedCard = handCopy.splice(selected,1)

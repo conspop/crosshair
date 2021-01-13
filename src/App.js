@@ -3,10 +3,10 @@ import axios from 'axios'
 import './App.css'
 
 const suitsImages = {
-  'S':<i class="fas fa-spade"></i>,
-  'C':<i class="fas fa-club"></i>,
-  'H':<i class="fas fa-heart"></i>,
-  'D':<i class="fas fa-diamond"></i>
+  'S':<i className="fas fa-spade"></i>,
+  'C':<i className="fas fa-club"></i>,
+  'H':<i className="fas fa-heart"></i>,
+  'D':<i className="fas fa-diamond"></i>
 }
 
 const numberMap = {
@@ -34,6 +34,7 @@ export default function App() {
   const [turn, setTurn] = useState('')
   const [hand, setHand] = useState('')
   const [board, setBoard] = useState('')
+  const [selected, setSelected] = useState('')
 
   const putNameInState = (name) => {
     setName(name)
@@ -45,6 +46,26 @@ export default function App() {
     setHand(data.playerOneHand)
     setBoard(data.board)
     setGameId(data.gameId)
+  }
+
+  const selectCard = (index) => {
+    if (parseInt(index) === selected) {
+      setSelected('')
+    } else {
+      setSelected(parseInt(index))
+    }
+  }
+
+  const playCard = (index) => {
+    if (selected) {
+      const handCopy = [...hand]
+      const boardCopy = [...board]
+      const playedCard = handCopy.splice(selected,1)
+      boardCopy[index] = playedCard[0]
+      setHand(handCopy)
+      setBoard(boardCopy)
+      setSelected('')
+    }
   }
   
   return (
@@ -58,6 +79,9 @@ export default function App() {
     <Game 
       hand={hand}
       board={board}
+      selected={selected}
+      selectCard={selectCard}
+      playCard={playCard}
     />
   )
 } 
@@ -94,23 +118,21 @@ function CreateOrJoinGame({newGame, putNameInState}) {
   )
 }
 
-function Game({ hand, board}) {
-  const [selected, setSelected] = useState('')
-
-  const selectCard = (index) => {
-    if (parseInt(index) === selected) {
-      setSelected('')
-    } else {
-      setSelected(parseInt(index))
-    }
-  }
+function Game({ hand, board, selected, selectCard, playCard}) {
 
   return (
     <div className='game-container'>
-      <div className='title'>Crossfire</div>
+      <div className='title'>Crosshair</div>
       <div className='message'>Seb's Turn</div>
       <div className='board'>
-        {board.map((card, index) => <Card card={card} index={index} location='board' />)}
+        {board.map((card, index) => {
+          return <Card 
+            card={card} 
+            index={index} 
+            location='board' 
+            playCard={playCard}
+          />
+        })}
       </div>
       <div className='hand'>
         {hand.map((card, index) => {
@@ -129,9 +151,9 @@ function Game({ hand, board}) {
 
 function Card(props) {
   const {suit, number} = props.card
-  const {index, location, selected, selectCard} = props
+  const {index, location, selected, selectCard, playCard} = props
 
-  const cardColor = {
+  const cardStyle = {
     color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
     border: selected ? '4px solid green' : '1px solid black'
   }
@@ -140,13 +162,15 @@ function Card(props) {
     const {location, index} = event.currentTarget.dataset
     if (location === 'hand') {
       selectCard(index)
+    } else if (location === 'board') {
+      playCard(index)
     }
   }
 
   return (
     <div 
       className='card'
-      style={cardColor}
+      style={cardStyle}
       data-index={index}
       data-location={location}
       key={suit + number}

@@ -48,10 +48,10 @@ export default function App() {
       console.log(name)
       console.log(data.playerOneName)
       if (name === data.playerOneName) {
-        setPlayer('playerOne')
+        setPlayer(true)
         setHand(data.playerOneHand)
       } else {
-        setPlayer('playerTwo')
+        setPlayer(false)
         setHand(data.playerTwoHand)
       }
       setBoard(data.board)
@@ -63,10 +63,12 @@ export default function App() {
   }
 
   const selectCard = (index) => {
-    if (parseInt(index) === selected) {
-      setSelected('')
-    } else {
-      setSelected(parseInt(index))
+    if (player === turn) {
+      if (parseInt(index) === selected) {
+        setSelected('')
+      } else {
+        setSelected(parseInt(index))
+      }
     }
   }
 
@@ -83,14 +85,12 @@ export default function App() {
       setHand(handCopy)
       setBoard(boardCopy)
       setSelected('')
-
-      console.log(turn)
+      setTurn(turn => !turn)
 
       axios.put(`/games/play-card`,{
         gameId,
-        [name === playerOneName ? 'playerOneHand' : 'playerTwoHand']:handCopy,
+        [player ? 'playerOneHand' : 'playerTwoHand']:handCopy,
         board:boardCopy,
-        turn: !turn
       })
       .catch(err => {
         console.log(err.message)
@@ -98,6 +98,24 @@ export default function App() {
         setBoard(oldBoard)
       })
     }
+  }
+
+  const refresh = async () => {
+    await axios.get(`/games/${gameId}`)
+    .then(res => {
+      console.log(res.data)
+      const {playerOneName, playerTwoName, turn, playerOneHand, playerTwoHand, board} = res.data
+      setPlayerOneName(playerOneName)
+      setPlayerTwoName(playerTwoName)
+      setTurn(turn)
+      if (player) {
+        setHand(playerOneHand)
+      } else {
+        setHand(playerTwoHand)
+      }
+      setBoard(board)
+    })
+    .catch(err => console.log(err.message))
   }
   
   return (
@@ -112,11 +130,15 @@ export default function App() {
       gameId={gameId}
       name={name}
       player={player}
+      turn={turn}
+      playerOneName={playerOneName}
+      playerTwoName={playerTwoName}
       hand={hand}
       board={board}
       selected={selected}
       selectCard={selectCard}
       playCard={playCard}
+      refresh={refresh}
     />
   )
 } 
@@ -162,9 +184,9 @@ function CreateOrJoinGame({joinGame, putNameInState}) {
   )
 }
 
-function Game({ gameId, name, player, hand, board, selected, selectCard, playCard}) {
+function Game({ gameId, name, player, turn, playerOneName, playerTwoName, hand, board, selected, selectCard, playCard, refresh}) {
   let orientedBoard
-  if (player === 'playerTwo') {
+  if (!player) {
     orientedBoard = [
       board[24], board[19], board[14], board[9], board[4],
       board[23], board[18], board[13], board[8], board[3],
@@ -176,13 +198,15 @@ function Game({ gameId, name, player, hand, board, selected, selectCard, playCar
     orientedBoard = [...board]
   }
 
-  console.log(orientedBoard)
+  const handleRefresh = () => {
+    refresh()
+  }
 
   return (
     <div className='game-container'>
       <div className='game-id'>{gameId} | {name}</div>
       <div className='title'>Crosshair</div>
-      <div className='message'>Seb's Turn</div>
+      <div className='message'>{player === turn ? 'Your' : (player ? playerTwoName+'\'s' : playerOneName+'\'s')} Turn</div>
       <div className='board'>
         {orientedBoard.map((card, index) => {
           return <Card 
@@ -204,6 +228,7 @@ function Game({ gameId, name, player, hand, board, selected, selectCard, playCar
           />
         })}
       </div>
+      <button onClick={handleRefresh}>Refresh</button>
     </div>
   )
 }

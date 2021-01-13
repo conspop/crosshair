@@ -3,7 +3,8 @@ const Game = require('../models/game')
 module.exports = {
   newGame,
   joinGame,
-  playCard
+  playCard,
+  refresh
 };
 
 async function newGame(req, res) {
@@ -14,7 +15,8 @@ async function newGame(req, res) {
     playerOneName: req.body.username,
     playerOneHand: dealCards(shuffledDeck, 12),
     playerTwoHand: dealCards(shuffledDeck, 12),
-    board: dealCards(shuffledDeck, 25)
+    board: dealCards(shuffledDeck, 25),
+    turn: true
   })
 
   res.json(gameData)
@@ -90,15 +92,20 @@ async function joinGame(req, res) {
 async function playCard(req, res) {
   const filter = {gameId: req.body.gameId}
   let game = await Game.findOne(filter)
-  console.log((req.body.playerOneHand))
+  console.log(req.body)
   if (req.body.playerOneHand) {
     game.set({playerOneHand: req.body.playerOneHand})
   } else if (req.body.playerTwoHand) {
-    game.playerTwoHand.set(req.body.playerTwoHand)
+    game.set({playerTwoHand: req.body.playerTwoHand})
   }
   game.set({board: req.body.board})
-  game.turn = req.body.turn
+  game.turn = !game.turn
   await game.save()
+}
+
+async function refresh(req, res) {
+  const game = await Game.findOne({gameId:req.params.gameId})
+  res.json(game)
 }
 
 

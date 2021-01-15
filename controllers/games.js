@@ -145,32 +145,39 @@ function checkHand(hand) {
       hand[4].number === 14
     ) {
       const handValue = [10]
-      console.log(typeof(handValue))
       return handValue
     }
     return checkStraightFlush(hand)
   }
 
   function checkStraightFlush(hand) {
+    const isFlush = areAllSameSuit(hand)
+    const isStraight = areStraight(hand)
+    
     if (
-      areAllSameSuit(hand) &&
-      areStraight(hand)
+      isFlush &&
+      isStraight
     ) {
-      return [9,hand[4].number]
-    } else {
-      return check4OfAKind()
+      const handValue = [9,hand[4].number]
+      return handValue
     }
+    return check4OfAKind(hand)
   }
 
   function check4OfAKind(hand) {
-    if (
-      hand.slice(0,4).every(num => num[0]) ||
-      hand.slice(1).every(num => num[0])
-    ) {
-      return [8,hand[2].number]
-    } else {
-      return check4OfAKind()
+    const set1 = hand.slice(0,4)
+    const set2 = hand.slice(1)
+    console.log(set1)
+    console.log(set2)
+    
+    if (set1.every(card => card.number === set1[0].number)) {
+      const handValue = [8, set1[0].number, hand[4].number]
+      return handValue
+    } else if (set2.every(card => card.number === set2[0].number)) {
+      const handValue = [8, set2[0].number, hand[0].number]
+      return handValue
     }
+    return 'oops!'
   }
 
   function areAllSameSuit(handArray) {

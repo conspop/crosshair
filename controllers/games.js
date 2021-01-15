@@ -4,14 +4,15 @@ module.exports = {
   newGame,
   joinGame,
   playCard,
-  refresh
+  refresh,
+  checkHand
 };
 
 async function newGame(req, res) {
   const shuffledDeck = createShuffledDeck()
   
   const board = Array(25).fill('')
-  board[12] = shuffledDeck.pop()
+  // board[12] = shuffledDeck.pop()
 
   console.log(board)
 
@@ -20,7 +21,7 @@ async function newGame(req, res) {
     playerOneName: req.body.username,
     playerOneHand: dealCards(shuffledDeck, 12),
     playerTwoHand: dealCards(shuffledDeck, 12),
-    board,
+    board: dealCards(shuffledDeck, 25),
     turn: true
   })
 
@@ -104,6 +105,7 @@ async function playCard(req, res) {
   }
   game.set({board: req.body.board})
   game.turn = !game.turn
+  checkWinner(game)
   await game.save()
   res.json(game)
 }
@@ -111,6 +113,79 @@ async function playCard(req, res) {
 async function refresh(req, res) {
   const game = await Game.findOne({gameId:req.params.gameId})
   res.json(game)
+}
+
+function checkWinner({board}) {
+  if (board.includes('')) {
+    console.log('game is not over!')
+    return
+  } else {
+    checkHand([
+      board[0],
+      board[1],
+      board[2],
+      board[3],
+      board[4]
+    ])
+  }
+}
+
+function checkHand(hand) {
+  hand.sort((a,b) => a.number - b.number)
+  
+  return checkRoyalFlush(hand)
+
+  function checkRoyalFlush(hand) {  
+    const isFlush = areAllSameSuit(hand)
+    const isStraight = areStraight(hand)
+    
+    if (
+      isFlush &&
+      isStraight &&
+      hand[4].number === 14
+    ) {
+      const handValue = [10]
+      console.log(typeof(handValue))
+      return handValue
+    }
+    return checkStraightFlush(hand)
+  }
+
+  function checkStraightFlush(hand) {
+    if (
+      areAllSameSuit(hand) &&
+      areStraight(hand)
+    ) {
+      return [9,hand[4].number]
+    } else {
+      return check4OfAKind()
+    }
+  }
+
+  function check4OfAKind(hand) {
+    if (
+      hand.slice(0,4).every(num => num[0]) ||
+      hand.slice(1).every(num => num[0])
+    ) {
+      return [8,hand[2].number]
+    } else {
+      return check4OfAKind()
+    }
+  }
+
+  function areAllSameSuit(handArray) {
+    const suits = handArray.map(card => card.suit)
+    return suits.every(suit => suit === suits[0])
+  }
+
+  function areStraight(hand) {
+    return (
+      hand[0].number + 1 === hand[1].number &&
+      hand[1].number + 1 === hand[2].number &&
+      hand[2].number + 1 === hand[3].number &&
+      hand[3].number + 1 === hand[4].number
+    )
+  }
 }
 
 

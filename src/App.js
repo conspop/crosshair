@@ -113,12 +113,15 @@ export default function App() {
       } else {
         boardCopy[index] = playedCard[0] 
       }
-      
 
       setHand(handCopy)
       setBoard(boardCopy)
       setSelected('')
       setTurn(turn => !turn)
+
+      if (!boardCopy.includes('')) {
+        console.log('game over!')
+      }
 
       axios.put(`/games/play-card`,{
         gameId,
@@ -151,7 +154,7 @@ export default function App() {
     })
     .catch(err => console.log(err.message))
   }
-  
+
   return (
     gameId === ''
     ?

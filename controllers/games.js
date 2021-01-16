@@ -5,7 +5,8 @@ module.exports = {
   joinGame,
   playCard,
   refresh,
-  calculateHandValue
+  calculateHandValue,
+  calculateHandValues
 };
 
 async function newGame(req, res) {
@@ -153,9 +154,7 @@ function makeHand(board, handIndexArray) {
   handIndexArray.forEach(handIndex => {
     hand.push(board[handIndex])
   })
-  console.log(hand)
   hand.sort((a,b) => b.number - a.number)
-  console.log(hand)
   return hand
 }
 
@@ -330,9 +329,15 @@ function isPair(hand) {
 
 function getPairValue(hand) {
   const set1 = [hand.slice(0,2), hand.slice(2)]
-  const set2 = [hand.slice(1,3), [hand[0].number, hand[3], hand[4]]]
+  const set2 = [hand.slice(1,3), [hand[0], hand[3], hand[4]]]
   const set3 = [hand.slice(2,4), [hand[0], hand[1], hand[4]]]
   const set4 = [hand.slice(3), hand.slice(0,3)]
+  if (hand[0].number === 14 && hand[0].suit === 'C') {
+    console.log(set1)
+    console.log(set2)
+    console.log(set3)
+    console.log(set4)
+  }
   let handValue
   if (areSameNumber(set1[0])) {
     handValue = [2, set1[0][0].number, ...set1[1].map(card => card.number)]

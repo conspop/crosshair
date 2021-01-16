@@ -25,6 +25,19 @@ const numberMap = {
   14:'A'
 }
 
+const handMap = {
+  1: 'High Card',
+  2: 'Pair',
+  3: '2 Pair',
+  4: '3 Of A King',
+  5: 'Stright',
+  6: 'Flush',
+  7: 'Full House',
+  8: '4 Of A King',
+  9: 'Straight Flush',
+  10: 'Royal Flush'
+}
+
 export default function App() {
   
   const [name, setName] = useState('')
@@ -36,6 +49,7 @@ export default function App() {
   const [hand, setHand] = useState('')
   const [board, setBoard] = useState('')
   const [selected, setSelected] = useState('')
+  const [scoreboard, setScoreboard] = useState('')
 
   const putNameInState = (name) => {
     setName(name)
@@ -141,7 +155,7 @@ export default function App() {
     await axios.get(`/games/${gameId}`)
     .then(res => {
       console.log(res.data)
-      const {playerOneName, playerTwoName, turn, playerOneHand, playerTwoHand, board} = res.data
+      const {playerOneName, playerTwoName, turn, playerOneHand, playerTwoHand, board, scoreboard} = res.data
       setPlayerOneName(playerOneName)
       setPlayerTwoName(playerTwoName)
       setTurn(turn)
@@ -151,6 +165,9 @@ export default function App() {
         setHand(playerTwoHand)
       }
       setBoard(board)
+      if (scoreboard) {
+        setScoreboard(scoreboard)
+      }
     })
     .catch(err => console.log(err.message))
   }
@@ -176,6 +193,7 @@ export default function App() {
       selectCard={selectCard}
       playCard={playCard}
       refresh={refresh}
+      scoreboard={scoreboard}
     />
   )
 } 
@@ -221,7 +239,7 @@ function CreateOrJoinGame({joinGame, putNameInState}) {
   )
 }
 
-function Game({ gameId, name, player, turn, playerOneName, playerTwoName, hand, board, selected, selectCard, playCard, refresh}) {
+function Game({ gameId, name, player, turn, playerOneName, playerTwoName, hand, board, selected, selectCard, playCard, refresh, scoreboard}) {
   let orientedBoard
   if (!player) {
     orientedBoard = [
@@ -254,6 +272,8 @@ function Game({ gameId, name, player, turn, playerOneName, playerTwoName, hand, 
           />
         })}
       </div>
+      {!scoreboard
+      ?
       <div className='hand'>
         {hand.map((card, index) => {
           return <Card 
@@ -265,6 +285,41 @@ function Game({ gameId, name, player, turn, playerOneName, playerTwoName, hand, 
           />
         })}
       </div>
+      :
+      <table>
+        <tr>
+          <th></th>
+          <th>{playerOneName}</th>
+          <th>{playerTwoName}</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>{handMap[scoreboard.playerOne[0][0]]}</td>
+          <td>{handMap[scoreboard.playerTwo[0][0]]}</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>{handMap[scoreboard.playerOne[1][0]]}</td>
+          <td>{handMap[scoreboard.playerTwo[1][0]]}</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>{handMap[scoreboard.playerOne[2][0]]}</td>
+          <td>{handMap[scoreboard.playerTwo[2][0]]}</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>{handMap[scoreboard.playerOne[3][0]]}</td>
+          <td>{handMap[scoreboard.playerTwo[3][0]]}</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>{handMap[scoreboard.playerOne[4][0]]}</td>
+          <td>{handMap[scoreboard.playerTwo[4][0]]}</td>
+        </tr>
+      </table>
+      }
+      
       <button onClick={handleRefresh}>Refresh</button>
     </div>
   )

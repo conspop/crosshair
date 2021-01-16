@@ -107,12 +107,19 @@ async function playCard(req, res) {
   }
   game.set({board: req.body.board})
   game.turn = !game.turn
+  if (!game.board.includes('')) {
+    game.scoreboard = buildScoreboard(game)
+  }
   await game.save()
   res.json(game)
 }
 
 async function refresh(req, res) {
   const game = await Game.findOne({gameId:req.params.gameId})
+  if (!game.board.includes('')) {
+    game.scoreboard = buildScoreboard(game)
+  }
+  console.log(game)
   res.json(game)
 }
 

@@ -14,7 +14,8 @@ const gameSchema = new Schema({
   playerOneHand: [cardSchema],
   playerTwoHand: [cardSchema],
   board: [],
-  turn: Boolean
+  turn: Boolean,
+  scoreboard: Schema.Types.Mixed
 });
 
 module.exports = mongoose.model('Game', gameSchema);

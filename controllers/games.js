@@ -6,7 +6,8 @@ module.exports = {
   playCard,
   refresh,
   calculateHandValue,
-  calculateHandValues
+  calculateHandValues,
+  buildScoreboard
 };
 
 async function newGame(req, res) {
@@ -106,7 +107,6 @@ async function playCard(req, res) {
   }
   game.set({board: req.body.board})
   game.turn = !game.turn
-  // Going to need to change a property of game for scoreboard
   await game.save()
   res.json(game)
 }
@@ -115,8 +115,6 @@ async function refresh(req, res) {
   const game = await Game.findOne({gameId:req.params.gameId})
   res.json(game)
 }
-
-
 
 function buildScoreboard({board}) {
   const playerOneHandIndexesArray = [
@@ -332,12 +330,6 @@ function getPairValue(hand) {
   const set2 = [hand.slice(1,3), [hand[0], hand[3], hand[4]]]
   const set3 = [hand.slice(2,4), [hand[0], hand[1], hand[4]]]
   const set4 = [hand.slice(3), hand.slice(0,3)]
-  if (hand[0].number === 14 && hand[0].suit === 'C') {
-    console.log(set1)
-    console.log(set2)
-    console.log(set3)
-    console.log(set4)
-  }
   let handValue
   if (areSameNumber(set1[0])) {
     handValue = [2, set1[0][0].number, ...set1[1].map(card => card.number)]

@@ -5,6 +5,7 @@ import tokenService from '../utils/tokenService'
 import './GamePage.css'
 import Board from '../components/Board'
 import Hand from '../components/Hand'
+import Scoreboard from '../components/Scoreboard'
 
 export default function GamePage({user}) {
   const {gameId} = useParams()
@@ -43,14 +44,16 @@ export default function GamePage({user}) {
       })
     }
     getGame()
-  },[gameId])
+  },[gameId, user.username])
+
+  const {player, turn, opponent, board, scoreboard, hand} = game
   
   if (game) {
     return (
       <div className='game-container'>
-        {game.scoreboard ? '' : <Turn player={game.player} turn={game.turn} opponent={game.opponent} />}
-        <Board board={game.board} player={game.player} />
-        {/* {game.scoreboard ? <Scoreboard /> : <Hand hand={hand} />} */}
+        {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
+        <Board board={board} player={player} />
+        {scoreboard ? <Scoreboard scoreboard={scoreboard} /> : <Hand hand={hand} />}
       </div>
     )
   } else {

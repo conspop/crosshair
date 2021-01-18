@@ -337,39 +337,39 @@ export default function App() {
 //         })}
 //       </div>
 //       :
-//       <table>
-//         <tr>
-//           <th>Hand</th>
-//           <th>{playerOneName}</th>
-//           <th>{playerTwoName}</th>
-//           <th>Winner</th>
-//         </tr>
-//         <tr>
-//           <td>1</td>
-//           <td>{handMap[scoreboard.playerOne[0][0]]}</td>
-//           <td>{handMap[scoreboard.playerTwo[0][0]]}</td>
-//         </tr>
-//         <tr>
-//           <td>2</td>
-//           <td>{handMap[scoreboard.playerOne[1][0]]}</td>
-//           <td>{handMap[scoreboard.playerTwo[1][0]]}</td>
-//         </tr>
-//         <tr>
-//           <td>3</td>
-//           <td>{handMap[scoreboard.playerOne[2][0]]}</td>
-//           <td>{handMap[scoreboard.playerTwo[2][0]]}</td>
-//         </tr>
-//         <tr>
-//           <td>4</td>
-//           <td>{handMap[scoreboard.playerOne[3][0]]}</td>
-//           <td>{handMap[scoreboard.playerTwo[3][0]]}</td>
-//         </tr>
-//         <tr>
-//           <td>5</td>
-//           <td>{handMap[scoreboard.playerOne[4][0]]}</td>
-//           <td>{handMap[scoreboard.playerTwo[4][0]]}</td>
-//         </tr>
-//       </table>
+      // <table>
+      //   <tr>
+      //     <th>Hand</th>
+      //     <th>{playerOneName}</th>
+      //     <th>{playerTwoName}</th>
+      //     <th>Winner</th>
+      //   </tr>
+      //   <tr>
+      //     <td>1</td>
+      //     <td>{handMap[scoreboard.playerOne[0][0]]}</td>
+      //     <td>{handMap[scoreboard.playerTwo[0][0]]}</td>
+      //   </tr>
+      //   <tr>
+      //     <td>2</td>
+      //     <td>{handMap[scoreboard.playerOne[1][0]]}</td>
+      //     <td>{handMap[scoreboard.playerTwo[1][0]]}</td>
+      //   </tr>
+      //   <tr>
+      //     <td>3</td>
+      //     <td>{handMap[scoreboard.playerOne[2][0]]}</td>
+      //     <td>{handMap[scoreboard.playerTwo[2][0]]}</td>
+      //   </tr>
+      //   <tr>
+      //     <td>4</td>
+      //     <td>{handMap[scoreboard.playerOne[3][0]]}</td>
+      //     <td>{handMap[scoreboard.playerTwo[3][0]]}</td>
+      //   </tr>
+      //   <tr>
+      //     <td>5</td>
+      //     <td>{handMap[scoreboard.playerOne[4][0]]}</td>
+      //     <td>{handMap[scoreboard.playerTwo[4][0]]}</td>
+      //   </tr>
+      // </table>
 //       }
       
 //       <button onClick={handleRefresh}>Refresh</button>

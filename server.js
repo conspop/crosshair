@@ -20,6 +20,7 @@ app.use('/users', require('./routes/users'));
 //protected routes
 app.use(require('./config/auth'));
 app.use('/games', require('./routes/games'));
+app.use('/proposals', require('./routes/proposals'));
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

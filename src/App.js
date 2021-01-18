@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import GamesPage from './pages/GamesPage'
 import GamePage from './pages/GamePage'
+import LobbyPage from './pages/LobbyPage'
 
 export default function App() {
 
@@ -42,6 +43,9 @@ export default function App() {
               history={history}
             />}
           />
+          <Route exact path='/lobby'>
+            <LobbyPage user={user} />
+          </Route>
           <Route exact path='/games'>
             <GamesPage user={user} />
           </Route>

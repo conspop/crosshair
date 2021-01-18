@@ -14,6 +14,10 @@ app.use(express.json());
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
 
+//unprotected routes
+app.use('/api/users', require('./routes/api/users'));
+
+//protected routes
 app.use('/games', require('./routes/games'));
 
 app.get('/*', function(req, res) {

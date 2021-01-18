@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import './App.css'
 
+
+
 const suitsImages = {
   'S':<i className="fas fa-spade"></i>,
   'C':<i className="fas fa-club"></i>,
@@ -288,9 +290,10 @@ function Game({ gameId, name, player, turn, playerOneName, playerTwoName, hand, 
       :
       <table>
         <tr>
-          <th></th>
+          <th>Hand</th>
           <th>{playerOneName}</th>
           <th>{playerTwoName}</th>
+          <th>Winner</th>
         </tr>
         <tr>
           <td>1</td>

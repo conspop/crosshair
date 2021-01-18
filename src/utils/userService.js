@@ -1,7 +1,7 @@
 import tokenService from './tokenService'
 import axios from 'axios'
 
-const BASE_URL = '/api/users/';
+const BASE_URL = '/users/';
 
 const functions = {
   signup,

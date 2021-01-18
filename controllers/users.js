@@ -8,7 +8,7 @@ module.exports = {
 };
 
 async function signup(req, res) {
-  console.log('got here')
+  console.log(req.body)
   const user = new User(req.body);
   try {
     await user.save();
@@ -21,6 +21,7 @@ async function signup(req, res) {
 }
 
 async function login(req, res) {
+  console.log('got login')
   try {
     const user = await User.findOne({username: req.body.username});
     if (!user) return res.status(401).json({err: 'bad credentials'});

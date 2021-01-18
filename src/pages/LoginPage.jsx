@@ -16,7 +16,7 @@ class LoginForm extends React.Component {
       try {
         await userService.login(this.state)
         this.props.handleSignupOrLogin();
-        this.props.history.push('/schedule')
+        this.props.history.push('/')
       } catch (err) {
         this.setState({
           message: err.message,

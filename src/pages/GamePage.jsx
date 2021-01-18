@@ -4,15 +4,12 @@ import axios from 'axios'
 import tokenService from '../utils/tokenService'
 import './GamePage.css'
 import Board from '../components/Board'
+import Hand from '../components/Hand'
 
 export default function GamePage({user}) {
   const {gameId} = useParams()
 
   const [game, setGame] = useState('')
-  const {playerOneName, playerTwoName} = game
-
-  // playerOne is true
-  const player = user.username === playerOneName ? true : false
 
   useEffect(() => {
     const getGame = async () => {
@@ -21,7 +18,29 @@ export default function GamePage({user}) {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + tokenService.getToken()
         }
-      }).then(response => setGame(response.data))
+      }).then(response => {
+        const {
+          _id, 
+          board, 
+          playerOneName, 
+          playerTwoName,
+          playerOneHand, 
+          playerTwoHand,
+          turn,
+          scoreboard
+        } = response.data
+        const player = playerOneName === user.username ? true : false
+        const gameData = {
+          _id,
+          board,
+          player,
+          hand: player ? playerOneHand : playerTwoHand,
+          opponent: player ? playerTwoName : playerOneName,
+          turn,
+          scoreboard
+        }
+        setGame(gameData)
+      })
     }
     getGame()
   },[gameId])
@@ -29,12 +48,20 @@ export default function GamePage({user}) {
   if (game) {
     return (
       <div className='game-container'>
-        {/* <Turn /> */}
-        <Board board={game.board} player={player} />
-        {/* <Hand /> */}
+        {game.scoreboard ? '' : <Turn player={game.player} turn={game.turn} opponent={game.opponent} />}
+        <Board board={game.board} player={game.player} />
+        {/* {game.scoreboard ? <Scoreboard /> : <Hand hand={hand} />} */}
       </div>
     )
   } else {
     return ''
+  }
+}
+
+function Turn({player, turn, opponent}) {
+  if (player === turn) {
+    return 'Your Turn'
+  } else {
+    return `${opponent}'s Turn`
   }
 }

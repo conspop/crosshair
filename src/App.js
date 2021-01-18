@@ -381,10 +381,10 @@ export default function App() {
 //   const {suit, number} = props.card
 //   const {index, location, selected, selectCard, playCard} = props
 
-  // const cardStyle = {
-  //   color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
-  //   border: selected ? '4px solid green' : '1px solid black'
-  // }
+//   const cardStyle = {
+//     color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
+//     border: selected ? '4px solid green' : '1px solid black'
+//   }
 
 //   const handleClick = (event) => {
 //     const {location, index} = event.currentTarget.dataset

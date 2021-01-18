@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use('/users', require('./routes/users'));
 
 //protected routes
+app.use(require('./config/auth'));
 app.use('/games', require('./routes/games'));
 
 app.get('/*', function(req, res) {

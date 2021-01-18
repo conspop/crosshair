@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import './App.css'
 import { Switch, Route } from 'react-router-dom'
 
@@ -8,6 +7,7 @@ import Header from './pages/Header'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import GamesPage from './pages/GamesPage'
+import GamePage from './pages/GamePage'
 
 export default function App() {
 
@@ -42,8 +42,11 @@ export default function App() {
               history={history}
             />}
           />
-          <Route exact path='/'>
-            <GamesPage />
+          <Route exact path='/games'>
+            <GamesPage user={user} />
+          </Route>
+          <Route path='/games/:gameId'>
+            <GamePage user={user} />
           </Route>
         </div>
       </Switch>
@@ -378,10 +381,10 @@ export default function App() {
 //   const {suit, number} = props.card
 //   const {index, location, selected, selectCard, playCard} = props
 
-//   const cardStyle = {
-//     color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
-//     border: selected ? '4px solid green' : '1px solid black'
-//   }
+  // const cardStyle = {
+  //   color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
+  //   border: selected ? '4px solid green' : '1px solid black'
+  // }
 
 //   const handleClick = (event) => {
 //     const {location, index} = event.currentTarget.dataset

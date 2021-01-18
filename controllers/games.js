@@ -1,14 +1,22 @@
+const User = require('../models/user')
 const Game = require('../models/game')
 
 module.exports = {
   newGame,
   joinGame,
   playCard,
-  refresh,
+  show,
+  index,
   calculateHandValue,
   calculateHandValues,
   buildScoreboard
 };
+
+async function index(req, res) {
+  console.log('got here')
+  const {games} = await User.findById(req.user._id).populate('games')
+  res.json(games)
+}
 
 async function newGame(req, res) {
   const shuffledDeck = createShuffledDeck()
@@ -114,12 +122,11 @@ async function playCard(req, res) {
   res.json(game)
 }
 
-async function refresh(req, res) {
-  const game = await Game.findOne({gameId:req.params.gameId})
+async function show(req, res) {
+  const game = await Game.findById(req.params.gameId)
   if (!game.board.includes('')) {
     game.scoreboard = buildScoreboard(game)
   }
-  console.log(game)
   res.json(game)
 }
 

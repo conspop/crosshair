@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const Proposal = require('../models/proposal')
 const Game = require('../models/game')
+const games = require('./games')
 
 module.exports = {
   index,
@@ -21,10 +22,8 @@ async function create(req, res) {
 
 async function acceptProposal(req, res) {
   const {name} = req.body
-  const proposal = await Proposal.findOne({name})
-  const playerOneId = proposal.playerId
-  const playerTwoId = req.user._id
-  const playerOneName = proposal.name
-  const playerTwoName = req.user.username
-
+  Proposal.deleteOne({name}, function (err) {
+    if (err) {console.log(err.message)}
+  })
+  res.end()
 }

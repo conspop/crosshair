@@ -20,69 +20,76 @@ async function index(req, res) {
 
 async function newGame(req, res) {
   const shuffledDeck = createShuffledDeck()
-  
-  const board = Array(25).fill('')
-  board[12] = shuffledDeck.pop()
 
-  console.log(board)
-
-  const gameData = await Game.create({
-    gameId: createGameId(), 
-    playerOneName: req.body.username,
+  // create new game
+  const game = new Game({
+    playerOneName: req.body.playerOneName,
+    playerTwoName: req.user.username,
     playerOneHand: dealCards(shuffledDeck, 12),
     playerTwoHand: dealCards(shuffledDeck, 12),
-    board,
-    turn: true
+    board: createBoard(shuffledDeck),
+    turn: chooseFirstTurn(),
+    scoreboard: null
   })
+  await game.save()
 
-  res.json(gameData)
+  // add game id to users
+  const playerOne = await User.findOne({username: game.playerOneName})
+  const playerTwo = await User.findOne({username: game.playerTwoName})
+  playerOne.games.push(game._id)
+  await playerOne.save()
+  playerTwo.games.push(game._id)
+  await playerTwo.save()
+  
+  res.end()
+}
 
-  function createGameId() {
-    let gameId = ''
-    while (gameId.length < 5) {
-      gameId += (Math.floor(Math.random() * 9) + 1)
-    }
-    return gameId
-  }
-
-  function dealCards(deck, numberOfCards) {
-    let dealtCards = []
-    for (let i = 1; i <= numberOfCards; i++) {
-      dealtCards.push(deck.pop())
-    }
-    return dealtCards
-  }
-
-  function createShuffledDeck() {
-    const unshuffledDeck = createUnshuffledDeck()
-    const shuffledDeck = shuffle(unshuffledDeck)
-    return shuffledDeck
-    
-    function createUnshuffledDeck() {
-      const suits = ['S', 'C', 'H', 'D']
-      const unshuffledDeck = []
-      for (let suit = 0; suit < suits.length; suit++) {
-        for (let number = 2; number <= 14; number++) {
-          unshuffledDeck.push({
-            suit: suits[suit],
-            number
-          })
-        }
-      }
-      return unshuffledDeck     
-    } 
-    
-    //Fisher-Yates Algorithm
-    function shuffle(deck) {
-      for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * i)
-        const temp = deck[i]
-        deck[i] = deck[j]
-        deck[j] = temp
-      }
-      return deck
+function createShuffledDeck() {
+  const unshuffledDeck = createUnshuffledDeck()
+  const shuffledDeck = shuffle(unshuffledDeck)
+  return shuffledDeck
+}
+  
+function createUnshuffledDeck() {
+  const suits = ['S', 'C', 'H', 'D']
+  const unshuffledDeck = []
+  for (let suit = 0; suit < suits.length; suit++) {
+    for (let number = 2; number <= 14; number++) {
+      unshuffledDeck.push({
+        suit: suits[suit],
+        number
+      })
     }
   }
+  return unshuffledDeck     
+} 
+
+function shuffle(deck) {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i)
+    const temp = deck[i]
+    deck[i] = deck[j]
+    deck[j] = temp
+  }
+  return deck
+}
+
+function dealCards(deck, numberOfCards) {
+  let dealtCards = []
+  for (let i = 1; i <= numberOfCards; i++) {
+    dealtCards.push(deck.pop())
+  }
+  return dealtCards
+}
+
+function createBoard(shuffledDeck) {
+  const board = Array(25).fill('')
+  board[12] = shuffledDeck.pop()
+  return board
+}
+
+function chooseFirstTurn() {
+  return Math.floor(Math.random() * 2) === 0
 }
 
 async function joinGame(req, res) {

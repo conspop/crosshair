@@ -41,7 +41,25 @@ export default function LobbyPage({user}) {
     newProposals.splice(index, 1)
     setProposals(newProposals)
 
-    // post to db
+    // create game
+    axios.post('/games', {
+      token: tokenService.getToken(),
+      playerOneName: name
+    })
+    .then(() => {console.log('Game created!')})
+    .catch(() => {console.log('Could not create game!')})
+
+    // delete proposal
+    axios.delete('/proposals', {
+      data: {
+        token: tokenService.getToken(),
+        name
+      }
+    })
+    .then(() => {console.log('Proposal deleted!')})
+    .catch(() => {console.log('Could not delete proposal!')})
+
+
     axios.delete('/proposals', {
       data: {
         token: tokenService.getToken(),

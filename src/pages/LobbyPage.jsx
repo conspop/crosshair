@@ -34,14 +34,38 @@ export default function LobbyPage({user}) {
     })
   } 
 
-  const joinGame = async () => {
-    console.log('Join!')
-  }
+  const acceptProposal = async (index, name) => {
+    // update state
+    const oldProposals = [...proposals]
+    const newProposals = [...proposals]
+    newProposals.splice(index, 1)
+    setProposals(newProposals)
+
+    // post to db
+    axios.delete('/proposals', {
+      data: {
+        token: tokenService.getToken(),
+        name
+      }
+    })
+    .then(response => response.data)
+    .catch(error => {
+      console.log(error)
+      setProposals(oldProposals)
+    })
+  } 
   
   return (
     <div>
       <table>
-        {proposals.map(proposal => <Proposal proposal={proposal} joinGame={joinGame} />)}
+        {proposals.map((proposal, index) => 
+          <Proposal 
+            proposal={proposal} 
+            acceptProposal={acceptProposal}
+            index={index}
+            user={user}
+          />
+        )}
       </table>
       
       <button onClick={createProposal}>Create Game</button>
@@ -49,11 +73,33 @@ export default function LobbyPage({user}) {
   )
 }
 
-function Proposal({proposal, joinGame}) {
-  return (
-    <tr>
-      <td>{proposal.name}</td>
-      <td><button onClick={joinGame}>Join Game</button></td>
-    </tr>
-  )
+function Proposal({proposal, acceptProposal, index, user}) {
+  const handleClick = (event) => {
+    const {index, name} = event.target.dataset
+    acceptProposal(index, name)
+  }
+  
+  if (user.username !== proposal.name) {
+    return (
+      <tr>
+        <td>{proposal.name}</td>
+        <td>
+          <button 
+            data-name={proposal.name}
+            data-index={index} 
+            onClick={handleClick}
+          >
+            Join Game
+          </button>
+        </td>
+      </tr>
+    )
+  } else {
+    return (
+      <tr>
+        <td>{proposal.name}</td>
+        <td></td>
+      </tr>
+    )
+  }
 }

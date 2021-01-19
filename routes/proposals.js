@@ -6,4 +6,6 @@ router.get('/', proposalsCtrl.index)
 
 router.post('/', proposalsCtrl.create)
 
+router.delete('/', proposalsCtrl.acceptProposal)
+
 module.exports = router;

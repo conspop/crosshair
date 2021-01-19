@@ -8,7 +8,6 @@ const cardSchema = new Schema({
 })
 
 const gameSchema = new Schema({
-  gameId: String,
   playerOneName: String,
   playerTwoName: String,
   playerOneHand: [cardSchema],

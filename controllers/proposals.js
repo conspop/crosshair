@@ -4,7 +4,8 @@ const Game = require('../models/game')
 
 module.exports = {
   index,
-  create
+  create,
+  acceptProposal
 };
 
 async function index(req, res) {
@@ -16,4 +17,14 @@ async function create(req, res) {
   const proposal = new Proposal({playerId: req.user._id, name: req.user.username})
   await proposal.save()
   res.json('ok')
+}
+
+async function acceptProposal(req, res) {
+  const {name} = req.body
+  const proposal = await Proposal.findOne({name})
+  const playerOneId = proposal.playerId
+  const playerTwoId = req.user._id
+  const playerOneName = proposal.name
+  const playerTwoName = req.user.username
+
 }

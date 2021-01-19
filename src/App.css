@@ -46,3 +46,7 @@ td, th {
 p {
   text-align: center;
 }
+
+input {
+  font-size: 16px;
+}

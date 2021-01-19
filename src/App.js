@@ -171,40 +171,40 @@ export default function App() {
 //         24: 0,
 //       }
       
-//       const oldHand = [...hand]
-//       const handCopy = [...hand]
-//       const playedCard = handCopy.splice(selected,1)
+  //     const oldHand = [...hand]
+  //     const handCopy = [...hand]
+  //     const playedCard = handCopy.splice(selected,1)
 
-//       const oldBoard = [...board]
-//       let boardCopy = [...board]
-//       if (!player) {
-//         boardCopy[gridMap[index]] = playedCard[0] 
-//       } else {
-//         boardCopy[index] = playedCard[0] 
-//       }
+  //     const oldBoard = [...board]
+  //     let boardCopy = [...board]
+  //     if (!player) {
+  //       boardCopy[gridMap[index]] = playedCard[0] 
+  //     } else {
+  //       boardCopy[index] = playedCard[0] 
+  //     }
 
-//       setHand(handCopy)
-//       setBoard(boardCopy)
-//       setSelected('')
-//       setTurn(turn => !turn)
+  //     setHand(handCopy)
+  //     setBoard(boardCopy)
+  //     setSelected('')
+  //     setTurn(turn => !turn)
 
-//       if (!boardCopy.includes('')) {
-//         console.log('game over!')
-//       }
+  //     if (!boardCopy.includes('')) {
+  //       console.log('game over!')
+  //     }
 
-//       axios.put(`/games/play-card`,{
-//         gameId,
-//         [player ? 'playerOneHand' : 'playerTwoHand']:handCopy,
-//         board:boardCopy,
-//       })
-//       .then(res => console.log(res))
-//       .catch(err => {
-//         console.log(err.message)
-//         setHand(oldHand)
-//         setBoard(oldBoard)
-//       })
-//     }
-//   }
+  //     axios.put(`/games/play-card`,{
+  //       gameId,
+  //       [player ? 'playerOneHand' : 'playerTwoHand']:handCopy,
+  //       board:boardCopy,
+  //     })
+  //     .then(res => console.log(res))
+  //     .catch(err => {
+  //       console.log(err.message)
+  //       setHand(oldHand)
+  //       setBoard(oldBoard)
+  //     })
+  //   }
+  // }
 
 //   const refresh = async () => {
 //     await axios.get(`/games/${gameId}`)

@@ -34,55 +34,45 @@ class SignupPage extends Component {
 
   render() {
     return (
-      <div className='signup-page-container'>
-        <div className='page-container form'>
-          <div className='signup-form form-child'>
-            <label>
-              Username 
-              <input 
-                name='username'
-                value={this.state.username}
-                onChange={this.handleChange}
-              />
-            </label>
-            <label>
-              Password
-              <input 
-                name='password'
-                value={this.state.password}
-                onChange={this.handleChange}
-                type='password'
-              />
-            </label> 
-            <label>
-              Confirm Password
-              <input 
-                name='confirmPassword'
-                value={this.state.confirmPassword}
-                onChange={this.handleChange}
-                type='password'
-              />
-            </label>
-            {
-              this.state.message !== '' ?
-              <div className='signup-message'>{this.state.message}</div> :
-              ''
+      <>
+        <label>Username</label>
+        <input 
+          name='username'
+          value={this.state.username}
+          onChange={this.handleChange}
+        />
+        <label>Password</label> 
+        <input 
+          name='password'
+          value={this.state.password}
+          onChange={this.handleChange}
+          type='password'
+        />
+        <label>Confirm Password</label>
+        <input 
+          name='confirmPassword'
+          value={this.state.confirmPassword}
+          onChange={this.handleChange}
+          type='password'
+        />
+        {
+          this.state.message !== '' ?
+          <div className='signup-message'>{this.state.message}</div> :
+          ''
+        }
+        <div className="button-container">
+          <button
+            className='add-button'
+            onClick={this.handleSubmit}
+            style={this.isFormValid() ? {} : {opacity:.5}}
+            disabled={
+              (!this.isFormValid())
             }
-          </div>
-          <div className="button-container">
-            <button
-              className='add-button'
-              onClick={this.handleSubmit}
-              style={this.isFormValid() ? {} : {opacity:.5}}
-              disabled={
-                (!this.isFormValid())
-              }
-            >
-              Sign Up
-            </button>
-          </div>
+          >
+            Sign Up
+          </button>
         </div>
-      </div>
+      </>
     )
   }
 }

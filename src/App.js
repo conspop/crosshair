@@ -50,15 +50,15 @@ export default function App() {
                 history={history}
               />}
             />
-            <Route exact path='/lobby'>
-              <LobbyPage user={user} />
-            </Route>
-            <Route exact path='/games'>
-              <GamesPage user={user} />
-            </Route>
-            <Route path='/games/:gameId'>
-              <GamePage user={user} />
-            </Route>
+            <Route exact path='/lobby' render={() => (
+              userService.getUser() ? <LobbyPage user={user} /> : <Redirect to ='/login' />
+            )}/>
+            <Route exact path='/games' render={() => (
+              userService.getUser() ? <GamesPage user={user} /> : <Redirect to ='/login' />
+            )}/>
+            <Route exact path='/games/:gameId' render={() => (
+              userService.getUser() ? <GamePage user={user} /> : <Redirect to ='/login' />
+            )}/>
           </div>
         </>
       </Switch>

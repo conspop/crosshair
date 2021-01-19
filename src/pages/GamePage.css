@@ -1,6 +1,6 @@
 .game-container {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -8,18 +8,22 @@
 }
 
 .board {
+  width: 90vw;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(5, 13vw);
-  grid-template-rows: repeat(5, 13vw);
+  grid-template-columns: repeat(5, 16vw);
+  grid-template-rows: repeat(5, 16vw);
   justify-items: center;
   align-items: center;
-  gap: 2vw;
+  gap: 2.5vw;
 }
 
 .hand {
+  width: 90vw;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(6, 12vw);
-  grid-template-rows: repeat(2, 12vw);
+  grid-template-columns: repeat(6, 13.33vw);
+  grid-template-rows: repeat(2, 13.33vw);
   justify-items: center;
   align-items: center;
   gap: 2vw;

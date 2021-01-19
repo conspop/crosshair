@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import './App.css'
-import { Switch, Route } from 'react-router-dom'
-
+import { Switch, Route, Redirect } from 'react-router-dom'
 import userService from './utils/userService'
-import Header from './pages/Header'
+import './App.css'
+
+import Header from './components/Header'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import GamesPage from './pages/GamesPage'
@@ -24,36 +25,44 @@ export default function App() {
   }
 
   return (
-    
+    <div className='app-container'>
       <Switch>
-        <div>
-          <Header 
+        <>
+          <div className='header-container'>
+            <Header 
               user={user} 
               handleLogout={handleLogout}
             />
-          <Route exact path='/signup' render={({history}) =>
-            <SignupPage
-              handleSignupOrLogin={handleSignupOrLogin} 
-              history={history}
-            />}
-          />
-          <Route exact path='/login' render={({history}) =>
-            <LoginPage
-              handleSignupOrLogin={handleSignupOrLogin} 
-              history={history}
-            />}
-          />
-          <Route exact path='/lobby'>
-            <LobbyPage user={user} />
-          </Route>
-          <Route exact path='/games'>
-            <GamesPage user={user} />
-          </Route>
-          <Route path='/games/:gameId'>
-            <GamePage user={user} />
-          </Route>
-        </div>
+          </div>
+          <div className='page-container'>
+            <Route exact path='/'>
+              <Redirect to='/games' />
+            </Route>
+            <Route exact path='/signup' render={({history}) =>
+              <SignupPage
+                handleSignupOrLogin={handleSignupOrLogin} 
+                history={history}
+              />}
+            />
+            <Route exact path='/login' render={({history}) =>
+              <LoginPage
+                handleSignupOrLogin={handleSignupOrLogin} 
+                history={history}
+              />}
+            />
+            <Route exact path='/lobby'>
+              <LobbyPage user={user} />
+            </Route>
+            <Route exact path='/games'>
+              <GamesPage user={user} />
+            </Route>
+            <Route path='/games/:gameId'>
+              <GamePage user={user} />
+            </Route>
+          </div>
+        </>
       </Switch>
+    </div>
   )
 }
 

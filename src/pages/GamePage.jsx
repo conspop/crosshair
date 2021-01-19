@@ -101,11 +101,13 @@ export default function GamePage({user}) {
   }
 
   return (
-    <div className='game-container'>
-      {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
-      <Board board={board} player={player} handlePlayCard={handlePlayCard} />
-      {scoreboard ? <Scoreboard scoreboard={scoreboard} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
-    </div>
+    <>
+      <div className='game-container'>
+        {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
+        <Board board={board} player={player} handlePlayCard={handlePlayCard} />
+        {scoreboard ? <Scoreboard scoreboard={scoreboard} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
+      </div>
+    </>
   )
 
 }

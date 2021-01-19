@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
+import './LobbyPage.css'
 
 export default function LobbyPage({user}) {
   const [proposals, setProposals] = useState([{name:''}])
@@ -74,20 +75,34 @@ export default function LobbyPage({user}) {
   } 
   
   return (
-    <div>
-      <table>
-        {proposals.map((proposal, index) => 
-          <Proposal 
-            proposal={proposal} 
-            acceptProposal={acceptProposal}
-            index={index}
-            user={user}
-          />
-        )}
-      </table>
-      
-      <button onClick={createProposal}>Create Game</button>
-    </div>
+    <>
+      <div>
+        {proposals.length > 0 
+        ?
+        <table className='lobby-table'>
+          <tbody>
+            <tr>
+              <th>Player</th>
+              <th></th>
+            </tr>
+            {proposals.map((proposal, index) => 
+              <Proposal 
+                proposal={proposal} 
+                acceptProposal={acceptProposal}
+                index={index}
+                user={user}
+              />
+            )}
+          </tbody>
+        </table>
+        :
+        <p>There are no active games. Create one!</p>
+        }
+        <div className='lobby-button'>
+          <button onClick={createProposal}>Create Game</button>
+        </div>
+      </div>
+    </>
   )
 }
 

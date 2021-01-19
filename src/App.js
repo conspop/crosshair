@@ -131,15 +131,15 @@ export default function App() {
 //     setGameId(data.gameId)
 //   }
 
-//   const selectCard = (index) => {
-//     if (player === turn) {
-//       if (parseInt(index) === selected) {
-//         setSelected('')
-//       } else {
-//         setSelected(parseInt(index))
-//       }
-//     }
-//   }
+  // const selectCard = (index) => {
+  //   if (player === turn) {
+  //     if (parseInt(index) === selected) {
+  //       setSelected('')
+  //     } else {
+  //       setSelected(parseInt(index))
+  //     }
+  //   }
+  // }
 
 //   const playCard = (index) => {
 //     if (selected || selected === 0) {

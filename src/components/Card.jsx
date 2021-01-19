@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Card({card:{suit, number}, index}) {
+export default function Card({card:{suit, number}, index, handleClick, selected}) {
   const numberMap = {
     2:'2',
     3:'3',
@@ -26,13 +26,15 @@ export default function Card({card:{suit, number}, index}) {
 
   const cardStyle = {
     color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
-    // border: selected ? '4px solid green' : '1px solid black'
+    border: selected ? '4px solid green' : '1px solid black'
   }
 
   return (
     <div 
       className='card'
       style={cardStyle}
+      onClick={handleClick}
+      data-index={index}
     >
       {numberMap[number]}
       {suitsImages[suit]}

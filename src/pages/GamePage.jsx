@@ -11,7 +11,10 @@ export default function GamePage({user}) {
   const {gameId} = useParams()
 
   const [game, setGame] = useState('')
+  const [selected, setSelected] = useState('')
 
+  const {player, turn, opponent, board, scoreboard, hand} = game
+  
   useEffect(() => {
     const getGame = async () => {
       await axios.get(`/games/${gameId}`, {
@@ -46,14 +49,21 @@ export default function GamePage({user}) {
     getGame()
   },[gameId, user.username])
 
-  const {player, turn, opponent, board, scoreboard, hand} = game
-  
+  const handleSelect = (event) => {
+    const index = parseInt(event.currentTarget.dataset.index)
+    if (selected === index) {
+      setSelected('')
+    } else {
+      setSelected(parseInt(index))
+    }
+  }
+
   if (game) {
     return (
       <div className='game-container'>
         {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
         <Board board={board} player={player} />
-        {scoreboard ? <Scoreboard scoreboard={scoreboard} /> : <Hand hand={hand} />}
+        {scoreboard ? <Scoreboard scoreboard={scoreboard} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
       </div>
     )
   } else {

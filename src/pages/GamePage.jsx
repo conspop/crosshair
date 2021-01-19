@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
@@ -19,26 +19,37 @@ export default function GamePage({user}) {
   const [scoreboard, setScoreboard] = useState('')
   const [selected, setSelected] = useState('')
   
-  useEffect(() => {
-    const getGame = async () => {
-      await axios.get(`/games/${gameId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + tokenService.getToken()
-        }
-      }).then(response => {
-        const dataPlayer = response.data.playerOneName === user.username ? true : false
-        setId(response.data._id)
-        setBoard(response.data.board)
-        setPlayer(dataPlayer)
-        setHand(dataPlayer ? response.data.playerOneHand : response.data.playerTwoHand)
-        setOpponent(dataPlayer ? response.data.playerTwoName : response.data.playerOneName)
-        setTurn(response.data.turn)
-        setScoreboard(response.data.scoreboard)
-      })
-    }
-    getGame()
+  const refresh = useCallback(() => {
+    axios.get(`/games/${gameId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenService.getToken()
+      }
+    })
+    .then(response => {
+      const dataPlayer = response.data.playerOneName === user.username ? true : false
+      setId(response.data._id)
+      setBoard(response.data.board)
+      setPlayer(dataPlayer)
+      setHand(dataPlayer ? response.data.playerOneHand : response.data.playerTwoHand)
+      setOpponent(dataPlayer ? response.data.playerTwoName : response.data.playerOneName)
+      setTurn(response.data.turn)
+      setScoreboard(response.data.scoreboard)
+    })
+    .catch(() => console.log('Something went wrong!'))
   },[gameId, user.username])
+
+  // get game data when component first loads
+  useEffect(() => {
+    refresh()
+  },[refresh])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh()
+    }, 3000)
+    return () => clearInterval(interval)
+  })
 
   const handleSelect = (event) => {
     const index = parseInt(event.currentTarget.dataset.index)

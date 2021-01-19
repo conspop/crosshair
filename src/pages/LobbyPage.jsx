@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
 import './LobbyPage.css'
@@ -6,17 +6,26 @@ import './LobbyPage.css'
 export default function LobbyPage({user}) {
   const [proposals, setProposals] = useState([{name:''}])
 
-  useEffect(() => {
-    const getProposals = async () => {
-      await axios.get('/proposals', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + tokenService.getToken()
-        }
-      }).then(response => setProposals(response.data))
-    }
-    getProposals()
+  const refresh = useCallback(() => {
+    axios.get('/proposals', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenService.getToken()
+      }
+    }).then(response => setProposals(response.data))
   },[])
+
+  // refresh when component renders for the first time
+  useEffect(() => {
+    refresh()
+  },[refresh])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh()
+    }, 3000)
+    return () => clearInterval(interval)
+  })
 
   const createProposal = async () => {
     // update state

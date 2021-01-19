@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
@@ -6,18 +6,26 @@ import tokenService from '../utils/tokenService'
 export default function Games({user}) {
   const [games, setGames] = useState('')
 
-  useEffect(() => {
-    console.log('trying')
-    const getGames = async () => {
-      await axios.get('/games', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + tokenService.getToken()
-        }
-      }).then(response => setGames(response.data))
-    }
-    getGames()
+  const refresh = useCallback(() => {
+    axios.get('/games', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenService.getToken()
+      }
+    }).then(response => setGames(response.data))
   },[])
+
+  // refresh when component renders for the first time  
+  useEffect(() => {
+    refresh()
+  },[refresh])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh()
+    }, 3000)
+    return () => clearInterval(interval)
+  })
 
   return (
     <div>

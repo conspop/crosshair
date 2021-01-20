@@ -27,7 +27,7 @@
 .column-line {
   position: relative;
   z-index: -1;
-  height: 5px ; 
+  height: 10px ; 
   width: var(--gap-size); 
 }
 
@@ -35,7 +35,7 @@
   position: relative;
   z-index: -1;
   height: var(--gap-size);
-  width: 10px; 
+  width: 50px; 
 }
 
 .hand {

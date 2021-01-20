@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from './Card'
 
-export default function Board({board, player, handlePlayCard}) {
+export default function Board({board, player, handlePlayCard, lastPlayed}) {
   const playerTwoBoardMap = {
     0: 24, 1: 19, 2: 14, 3: 9, 4: 4,
     5: 23, 6: 18, 7: 13, 8: 8, 9: 3,
@@ -35,6 +35,7 @@ export default function Board({board, player, handlePlayCard}) {
             card={card} 
             index={index}
             handleClick={handlePlayCard}
+            lastPlayed={lastPlayed === index ? true : false}
           />
           {columnLines[index] ? <ColumnLine color={columnLines[index]} /> : false}
           {rowLines[index] ? 
@@ -60,6 +61,7 @@ export default function Board({board, player, handlePlayCard}) {
           card={board[playerTwoBoardMap[i]]} 
           index={playerTwoBoardMap[i]}
           handleClick={handlePlayCard}
+          lastPlayed={lastPlayed === playerTwoBoardMap[i] ? true : false}
         />
       )
       if (columnLines[i]) {
@@ -67,15 +69,15 @@ export default function Board({board, player, handlePlayCard}) {
       }
       if (rowLines[i]) {
         orientedBoard.push(
-          <div className='row-line'></div>,
+          <RowLine color={rowLines[i][0]} />,
           <div></div>,
-          <div className='row-line'></div>,
+          <RowLine color={rowLines[i][1]} />,
           <div></div>, 
-          <div className='row-line'></div>,
+          <RowLine color={rowLines[i][2]} />,
           <div></div>, 
-          <div className='row-line'></div>,
+          <RowLine color={rowLines[i][3]} />,
           <div></div>, 
-          <div className='row-line'></div>
+          <RowLine color={rowLines[i][4]} />
         )
       }
       

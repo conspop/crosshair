@@ -120,6 +120,7 @@ async function playCard(req, res) {
     game.set({playerTwoHand: req.body.playerTwoHand})
   }
   game.set({board: req.body.board})
+  game.lastPlayed = req.body.lastPlayed
   game.turn = !game.turn
   if (!game.board.includes('')) {
     game.scoreboard = buildScoreboard(game)

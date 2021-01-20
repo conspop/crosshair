@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Card({card, index, handleClick, selected}) {
+export default function Card({card, index, handleClick, selected, lastPlayed}) {
   const {suit, number} = card
 
   const numberMap = {
@@ -26,10 +26,19 @@ export default function Card({card, index, handleClick, selected}) {
     'D':<i className="fas fa-diamond"></i>
   }
 
+  let cardBorder
+  if (selected) {
+    cardBorder = '4px solid green'
+  } else if (lastPlayed) {
+    cardBorder = '4px solid black'
+  } else {
+    cardBorder = '1px solid black'
+  }
+
   const cardStyle = {
     backgroundColor: (card === '') ? 'lightgrey' : 'white',
     color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
-    border: selected ? '4px solid green' : '1px solid black'
+    border: cardBorder
   }
 
   return (

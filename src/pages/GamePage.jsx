@@ -18,9 +18,8 @@ export default function GamePage({user}) {
   const [turn, setTurn] = useState('')
   const [scoreboard, setScoreboard] = useState('')
   const [selected, setSelected] = useState('')
+  const [lastPlayed, setLastPlayed] = useState('')
 
-
-  
   const refresh = useCallback(() => {
     axios.get(`/api/games/${gameId}`, {
       headers: {
@@ -29,6 +28,7 @@ export default function GamePage({user}) {
       }
     })
     .then(response => {
+      console.log(response.data.lastPlayed)
       const dataPlayer = response.data.playerOneName === user.username ? true : false
       setId(response.data._id)
       setBoard(response.data.board)
@@ -37,6 +37,7 @@ export default function GamePage({user}) {
       setOpponent(dataPlayer ? response.data.playerTwoName : response.data.playerOneName)
       setTurn(response.data.turn)
       setScoreboard(response.data.scoreboard)
+      setLastPlayed(response.data.lastPlayed)
     })
     .catch(() => console.log('Something went wrong!'))
   },[gameId, user.username])
@@ -88,12 +89,14 @@ export default function GamePage({user}) {
         
         setTurn(turn => !turn)
         setSelected('')
+        setLastPlayed(index)
   
         const updateObject = {
           token: tokenService.getToken(),
           id,
           [player ? 'playerOneHand' : 'playerTwoHand']: newHand,
-          board: newBoard
+          board: newBoard,
+          lastPlayed: index
         }
   
         axios.put('/api/games', updateObject)
@@ -103,6 +106,7 @@ export default function GamePage({user}) {
           setHand(oldHand)
           setBoard(oldBoard)
           setTurn(turn => !turn)
+          setLastPlayed('')
         })
       }
     }
@@ -112,7 +116,7 @@ export default function GamePage({user}) {
     <>
       <div className='game-container'>
         {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
-        <Board board={board} player={player} handlePlayCard={handlePlayCard} />
+        <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />
         {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
       </div>
     </>

@@ -113,7 +113,7 @@ export default function GamePage({user}) {
       <div className='game-container'>
         {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
         <Board board={board} player={player} handlePlayCard={handlePlayCard} />
-        {scoreboard ? <Scoreboard scoreboard={scoreboard} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
+        {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
       </div>
     </>
   )

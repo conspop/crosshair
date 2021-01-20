@@ -130,7 +130,7 @@ async function playCard(req, res) {
 
 async function show(req, res) {
   const game = await Game.findById(req.params.gameId)
-  if (!game.board.includes('')) {
+  if (!game.board.includes('') && !game.scoreboard) {
     game.scoreboard = buildScoreboard(game)
   }
   res.json(game)

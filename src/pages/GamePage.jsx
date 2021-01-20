@@ -54,9 +54,9 @@ export default function GamePage({user}) {
   })
 
   useEffect(() => {
-    let vh = window.innerheight * 0.01
-    let pageContainerEl = document.querySelector('.page-container')
-    pageContainerEl.style.setProperty('--vh', `${vh}px`)
+    let vh = window.innerHeight * 0.01
+    let appContainerEl = document.querySelector('.app-container')
+    appContainerEl.style.setProperty('--vh', `${vh}px`)
   },[])
 
   const handleSelect = (event) => {

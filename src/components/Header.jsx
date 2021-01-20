@@ -10,8 +10,13 @@ export default function Header({user, handleLogout}) {
         <div><Auth user={user} handleLogout={handleLogout} /></div>
       </div>
       <div className='header-nav'>
-        <Link to='/lobby'>Lobby</Link>
-        <Link to='/games'>Games</Link>
+      <Link to='/how-to-play'>How To Play</Link>
+        {user ?
+          <>
+            <Link to='/lobby'>Lobby</Link>
+            <Link to='/games'>Your Games</Link>
+          </>
+          : false}
       </div>
     </>
   )

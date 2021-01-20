@@ -10,6 +10,7 @@ import SignupPage from './pages/SignupPage'
 import GamesPage from './pages/GamesPage'
 import GamePage from './pages/GamePage'
 import LobbyPage from './pages/LobbyPage'
+import HowToPlayPage from './pages/HowToPlayPage'
 
 export default function App() {
 
@@ -50,6 +51,9 @@ export default function App() {
                 history={history}
               />}
             />
+            <Route exact path='/how-to-play'>
+              <HowToPlayPage />
+            </Route>
             <Route exact path='/lobby' render={() => (
               userService.getUser() ? <LobbyPage user={user} /> : <Redirect to ='/login' />
             )}/>

@@ -7,7 +7,7 @@ export default function LobbyPage({user}) {
   const [proposals, setProposals] = useState([{name:''}])
 
   const refresh = useCallback(() => {
-    axios.get('/proposals', {
+    axios.get('/api/proposals', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + tokenService.getToken()
@@ -34,7 +34,7 @@ export default function LobbyPage({user}) {
     setProposals(newProposals)
 
     // post to db
-    axios.post('/proposals', {
+    axios.post('/api/proposals', {
       token: tokenService.getToken()
     })
     .then(response => response.data)
@@ -52,7 +52,7 @@ export default function LobbyPage({user}) {
     setProposals(newProposals)
 
     // create game
-    axios.post('/games', {
+    axios.post('/api/games', {
       token: tokenService.getToken(),
       playerOneName: name
     })
@@ -70,7 +70,7 @@ export default function LobbyPage({user}) {
     .catch(() => {console.log('Could not delete proposal!')})
 
 
-    axios.delete('/proposals', {
+    axios.delete('/api/proposals', {
       data: {
         token: tokenService.getToken(),
         name

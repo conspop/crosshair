@@ -22,7 +22,7 @@ export default function GamePage({user}) {
 
   
   const refresh = useCallback(() => {
-    axios.get(`/games/${gameId}`, {
+    axios.get(`/api/games/${gameId}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + tokenService.getToken()
@@ -96,7 +96,7 @@ export default function GamePage({user}) {
           board: newBoard
         }
   
-        axios.put('/games', updateObject)
+        axios.put('/api/games', updateObject)
         .then(() => {console.log('Updated game!')})
         .catch(() => {
           console.log('Something went wrong!')

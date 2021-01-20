@@ -7,7 +7,7 @@ export default function Games({user}) {
   const [games, setGames] = useState('')
 
   const refresh = useCallback(() => {
-    axios.get('/games', {
+    axios.get('/api/games', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + tokenService.getToken()

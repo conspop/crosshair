@@ -9,6 +9,10 @@
   align-items: center;
 }
 
+.turn {
+  font-size: 2rem;
+}
+
 .board {
   --card-size: 57px;
   --gap-size: 18px;

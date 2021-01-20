@@ -18,6 +18,8 @@ export default function GamePage({user}) {
   const [turn, setTurn] = useState('')
   const [scoreboard, setScoreboard] = useState('')
   const [selected, setSelected] = useState('')
+
+
   
   const refresh = useCallback(() => {
     axios.get(`/games/${gameId}`, {
@@ -50,6 +52,12 @@ export default function GamePage({user}) {
     }, 3000)
     return () => clearInterval(interval)
   })
+
+  useEffect(() => {
+    let vh = window.innerheight * 0.01
+    let pageContainerEl = document.querySelector('.page-container')
+    pageContainerEl.style.setProperty('--vh', `${vh}px`)
+  },[])
 
   const handleSelect = (event) => {
     const index = parseInt(event.currentTarget.dataset.index)
@@ -114,8 +122,8 @@ export default function GamePage({user}) {
 
 function Turn({player, turn, opponent}) {
   if (player === turn) {
-    return 'Your Turn'
+    return <div className='turn'>Your Turn</div>
   } else {
-    return `${opponent}'s Turn`
+    return <div className='turn'>{opponent}'s Turn</div>
   }
 }

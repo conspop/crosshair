@@ -109,7 +109,7 @@ async function playCard(req, res) {
   if (!game.board.includes('')) {
     game.scoreboard = buildScoreboard(game)
     const winnerAndLoser = chooseWinnerAndLoser(game.scoreboard, game.playerOneName, game.playerTwoName)
-    const resultsObjects = buildResultsObjects(winnerAndLoser)
+    await recordResults(winnerAndLoser)
   }
   await game.save()
   res.end()
@@ -372,7 +372,7 @@ function chooseWinnerAndLoser(scoreboard, playerOne, playerTwo) {
   let playerOneWins = 0
   let playerTwoWins = 0
   for (let hand = 0; hand < 5; hand++) {
-    for (let index = 0; index <= 6; i++ ) {
+    for (let index = 0; index <= 6; index++ ) {
       if (scoreboard.playerOne[hand][index] > scoreboard.playerTwo[hand][index]) {
         playerOneWins ++
         break
@@ -391,19 +391,32 @@ function chooseWinnerAndLoser(scoreboard, playerOne, playerTwo) {
   return winnerAndLoser
 }
 
-async function buildResultsObjects(winnerAndLoser) {
-  const winner = await User.find({username: winnerAndLoser[0]})
-  const loser = await User.find({username: winnerAndLoser[3]})
+async function recordResults(winnerAndLoser) {
+  const winner = await User.findOne({username: winnerAndLoser[0]})
+  const loser = await User.findOne({username: winnerAndLoser[2]})
 
-  const winnerOldELO = winner.results[winner.results.length - 1].endingELO || 1500
-  const loserOldELO = loser.results[loser.results.length - 1].endingELO || 1500
+  console.log(winner)
+  console.log(loser)
 
+  let winnerOldELO
+  let loserOldELO
+  if (winner.results.length > 0) {
+    winnerOldELO = winner.results[winner.results.length - 1].endingELO
+  } else {
+    winnerOldELO = 1500
+  }
+  if (loser.results.length > 0) {
+    loserOldELO = loser.results[loser.results.length - 1].endingELO
+  } else {
+    loserOldELO = 1500
+  }
+  
   const winnerResult = buildResultObject(winnerOldELO, loserOldELO, KFACTOR, loser.username, true)
   const loserResult = buildResultObject(loserOldELO, winnerOldELO, KFACTOR, winner.username, false)
 
   winner.results.push(winnerResult)
   await winner.save()
-  loser.result.push(loserResult)
+  loser.results.push(loserResult)
   await loser.save()
 }
 

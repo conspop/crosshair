@@ -21,6 +21,7 @@ app.use('/api/users', require('./routes/users'));
 app.use(require('./config/auth'));
 app.use('/api/games', require('./routes/games'));
 app.use('/api/proposals', require('./routes/proposals'));
+app.use('/api/leaderboard', require('./routes/leaderboard'));
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

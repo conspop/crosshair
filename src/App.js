@@ -11,6 +11,7 @@ import GamesPage from './pages/GamesPage'
 import GamePage from './pages/GamePage'
 import LobbyPage from './pages/LobbyPage'
 import HowToPlayPage from './pages/HowToPlayPage'
+import LeaderboardPage from './pages/LeaderboardPage'
 
 export default function App() {
 
@@ -59,6 +60,9 @@ export default function App() {
             )}/>
             <Route exact path='/games' render={() => (
               userService.getUser() ? <GamesPage user={user} /> : <Redirect to ='/login' />
+            )}/>
+            <Route exact path='/leaderboard' render={() => (
+              userService.getUser() ? <LeaderboardPage user={user} /> : <Redirect to ='/login' />
             )}/>
             <Route exact path='/games/:gameId' render={() => (
               userService.getUser() ? <GamePage user={user} /> : <Redirect to ='/login' />

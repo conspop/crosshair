@@ -56,9 +56,14 @@ function ScoreboardLine({handNumber, playerOneHand, playerTwoHand}) {
 }
 
 function ScoreboardHandTitle({color}) {
+  const titleStyle = {
+    color: color,
+    fontWeight: 'bold'
+  }
+  
   return (
     <td
-      style={{color:{color}}}
+      style={titleStyle}
     >
       {color}
     </td>

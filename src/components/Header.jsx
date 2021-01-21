@@ -15,6 +15,7 @@ export default function Header({user, handleLogout}) {
           <>
             <Link to='/lobby'>Lobby</Link>
             <Link to='/games'>Your Games</Link>
+            <Link to='/leaderboard'>Leaderboard</Link>
           </>
           : false}
       </div>

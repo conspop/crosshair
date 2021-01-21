@@ -4,7 +4,7 @@ import tokenService from '../utils/tokenService'
 import './LobbyPage.css'
 
 export default function LobbyPage({user}) {
-  const [proposals, setProposals] = useState([{name:''}])
+  const [proposals, setProposals] = useState('')
 
   const refresh = useCallback(() => {
     axios.get('/api/proposals', {
@@ -105,7 +105,7 @@ export default function LobbyPage({user}) {
           </tbody>
         </table>
         :
-        <p>There are no active games. Create one!</p>
+        <p>There are no active game requests. Choose Your Games to see a list of the games you're currently in. Choose Create Game to create a new game request.</p>
         }
         <div className='lobby-button'>
           <button onClick={createProposal}>Create Game</button>

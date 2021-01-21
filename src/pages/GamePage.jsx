@@ -58,6 +58,11 @@ export default function GamePage({user}) {
     let vh = window.innerHeight * 0.01
     let appContainerEl = document.querySelector('.app-container')
     appContainerEl.style.setProperty('--vh', `${vh}px`)
+
+    window.addEventListener('resize', () => {
+      let resizedVh = window.innerHeight * 0.01
+      appContainerEl.style.setProperty('--vh', `${resizedVh}px`)
+    })
   },[])
 
   const handleSelect = (event) => {

@@ -54,7 +54,7 @@ function createUnshuffledDeck() {
   const suits = ['S', 'C', 'H', 'D']
   const unshuffledDeck = []
   for (let suit = 0; suit < suits.length; suit++) {
-    for (let number = 2; number <= 14; number++) {
+    for (let number = 8; number <= 14; number++) {
       unshuffledDeck.push({
         suit: suits[suit],
         number

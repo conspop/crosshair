@@ -1,6 +1,33 @@
-const {calculateHandValue, calculateHandValues, buildScoreboard} = require('./games')
+const {calculateHandValue, calculateHandValues, buildScoreboard, chooseWinnerAndLoser, buildResultObject} = require('./games')
 
 testBoard = [{"_id":"6003439c041a1f0004096b40","suit":"S","number":2},{"_id":"6003439c041a1f0004096b2b","suit":"C","number":9},{"_id":"6003439c041a1f0004096b41","suit":"D","number":3},{"_id":"6003439c041a1f0004096b35","suit":"S","number":12},{"_id":"6003439c041a1f0004096b3e","suit":"C","number":2},{"_id":"6003439c041a1f0004096b2a","suit":"C","number":13},{"_id":"6003439c041a1f0004096b3c","suit":"C","number":11},{"_id":"6003439c041a1f0004096b3b","suit":"C","number":14},{"_id":"6003439c041a1f0004096b31","suit":"H","number":12},{"_id":"6003439c041a1f0004096b34","suit":"H","number":13},{"_id":"6003439c041a1f0004096b37","suit":"D","number":4},{"_id":"6003439c041a1f0004096b3f","suit":"S","number":9},{"suit":"D","number":10},{"_id":"6003439c041a1f0004096b3d","suit":"H","number":4},{"_id":"6003439c041a1f0004096b3a","suit":"H","number":5},{"_id":"6003439c041a1f0004096b2d","suit":"S","number":4},{"_id":"6003439c041a1f0004096b36","suit":"H","number":9},{"_id":"6003439c041a1f0004096b2f","suit":"H","number":10},{"_id":"6003439c041a1f0004096b33","suit":"C","number":12},{"_id":"6003439c041a1f0004096b32","suit":"H","number":6},{"_id":"6003439c041a1f0004096b2e","suit":"D","number":14},{"_id":"6003439c041a1f0004096b39","suit":"H","number":14},{"_id":"6003439c041a1f0004096b2c","suit":"C","number":10},{"_id":"6003439c041a1f0004096b30","suit":"S","number":5},{"_id":"6003439c041a1f0004096b38","suit":"H","number":8}]
+testScoreboard = {"playerOne":[[3,11,10,8],[2,14,12,9,8],[4,13,10,9],[1,13,12,10,9,8],[3,12,11,14]],"playerTwo":[[4,9,12,8],[3,13,12,11],[1,13,12,11,10,8],[7,10,14],[2,11,14,13,8]]}
+
+test('Build Result Object', () => {
+  expect(buildResultObject(1500, 1500, 32, 'Matty', false))
+  .toEqual({
+    beginningELO: 1500,
+    opponent: 'Matty',
+    isWin: false,
+    endingELO: 1484
+  })
+})
+
+test('Build Result Object', () => {
+  expect(buildResultObject(1500, 2000, 32, 'Matty', true))
+  .toEqual({
+    beginningELO: 1500,
+    opponent: 'Matty',
+    isWin: true,
+    endingELO: 1530
+  })
+})
+
+test('Choose Winner and Record', () => {
+  expect(chooseWinnerAndLoser(testScoreboard, "sebbbbby", "Matty"))
+  .toEqual(["Matty",3,"sebbbbby",2])
+})
+
 
 test('Build Scoreboard', () => {
   expect(buildScoreboard({board: testBoard}))

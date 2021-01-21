@@ -11,7 +11,14 @@ const userSchema = new Schema({
   games: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Game'
+  }],
+  results: [{
+    beginningELO: Number,
+    opponent: String,
+    isWin: Boolean,
+    endingELO: Number
   }]
+
 });
 
 userSchema.pre('save', function(next) {

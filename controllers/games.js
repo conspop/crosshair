@@ -3,14 +3,18 @@ const Game = require('../models/game')
 
 module.exports = {
   newGame,
-  joinGame,
   playCard,
   show,
   index,
   calculateHandValue,
   calculateHandValues,
-  buildScoreboard
+  buildScoreboard,
+  chooseWinnerAndLoser,
+  buildResultObject
 };
+
+// this adjusts how big the swing for wins and losses
+KFACTOR = 32
 
 async function index(req, res) {
   console.log('got here')
@@ -92,26 +96,6 @@ function chooseFirstTurn() {
   return Math.floor(Math.random() * 2) === 0
 }
 
-async function joinGame(req, res) {
-  const {gameId, username} = req.body
-  const game = await Game.findOne({gameId})
-  console.log(game)
-  if (game.playerOneName === username || game.playerTwoName === username) {
-    console.log('You are one of the existing players')
-    res.json(game)
-  } else if (game.playerOneName && game.playerTwoName) {
-    console.log('Messed up')
-    res.status(400).json({
-      message: 'This username is not in the gameId you provided.'
-    })
-  } else {
-    console.log('Creating player 2')
-    game.playerTwoName = req.body.username
-    await game.save()
-    res.json(game)
-  }
-}
-
 async function playCard(req, res) {
   let game = await Game.findById(req.body.id)
   if (req.body.playerOneHand) {
@@ -124,6 +108,8 @@ async function playCard(req, res) {
   game.turn = !game.turn
   if (!game.board.includes('')) {
     game.scoreboard = buildScoreboard(game)
+    const winnerAndLoser = chooseWinnerAndLoser(game.scoreboard, game.playerOneName, game.playerTwoName)
+    const resultsObjects = buildResultsObjects(winnerAndLoser)
   }
   await game.save()
   res.end()
@@ -131,9 +117,6 @@ async function playCard(req, res) {
 
 async function show(req, res) {
   const game = await Game.findById(req.params.gameId)
-  if (!game.board.includes('') && !game.scoreboard) {
-    game.scoreboard = buildScoreboard(game)
-  }
   res.json(game)
 }
 
@@ -383,4 +366,69 @@ function areStraight(hand) {
 
 function areSameNumber(set) {
   return set.every(card => card.number === set[0].number)
+}
+
+function chooseWinnerAndLoser(scoreboard, playerOne, playerTwo) {
+  let playerOneWins = 0
+  let playerTwoWins = 0
+  for (let hand = 0; hand < 5; hand++) {
+    for (let index = 0; index <= 6; i++ ) {
+      if (scoreboard.playerOne[hand][index] > scoreboard.playerTwo[hand][index]) {
+        playerOneWins ++
+        break
+      } else if (scoreboard.playerOne[hand][index] < scoreboard.playerTwo[hand][index]) {
+        playerTwoWins ++
+        break
+      }
+    }
+  }
+  let winnerAndLoser
+  if (playerOneWins > playerTwoWins) {
+    winnerAndLoser = [playerOne, playerOneWins, playerTwo, playerTwoWins]
+  } else {
+    winnerAndLoser = [playerTwo, playerTwoWins, playerOne, playerOneWins]
+  }
+  return winnerAndLoser
+}
+
+async function buildResultsObjects(winnerAndLoser) {
+  const winner = await User.find({username: winnerAndLoser[0]})
+  const loser = await User.find({username: winnerAndLoser[3]})
+
+  const winnerOldELO = winner.results[winner.results.length - 1].endingELO || 1500
+  const loserOldELO = loser.results[loser.results.length - 1].endingELO || 1500
+
+  const winnerResult = buildResultObject(winnerOldELO, loserOldELO, KFACTOR, loser.username, true)
+  const loserResult = buildResultObject(loserOldELO, winnerOldELO, KFACTOR, winner.username, false)
+
+  winner.results.push(winnerResult)
+  await winner.save()
+  loser.result.push(loserResult)
+  await loser.save()
+}
+
+function buildResultObject(playerOldELO, opponentOldELO, kFactor, opponent, isWin) {
+  const resultObject = {
+    beginningELO: playerOldELO,
+    opponent,
+    isWin,
+    endingELO: calculateNewELO(playerOldELO, opponentOldELO, kFactor, isWin)
+  }
+  return resultObject
+}
+
+function calculateNewELO(playerOldELO, opponentOldELO, kFactor, isWin) {
+  let playerTransformed = 10 ** (playerOldELO / 400)
+  let opponentTransformed = 10 ** (opponentOldELO / 400)
+
+  let playerExpected = playerTransformed / (playerTransformed + opponentTransformed)
+
+  let playerNewELO
+  if (isWin) {
+    playerNewELO = Math.round(playerOldELO + kFactor * (1 - playerExpected))
+  } else {
+    playerNewELO = Math.round(playerOldELO + kFactor * (0 - playerExpected))
+  }
+
+  return playerNewELO
 }

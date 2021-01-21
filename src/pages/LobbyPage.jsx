@@ -15,6 +15,17 @@ export default function LobbyPage({user}) {
     }).then(response => setProposals(response.data))
   },[])
 
+  useEffect(() => {
+    let vh = window.innerHeight * 0.01
+    let appContainerEl = document.querySelector('.app-container')
+    appContainerEl.style.setProperty('--vh', `${vh}px`)
+
+    window.addEventListener('resize', () => {
+      let resizedVh = window.innerHeight * 0.01
+      appContainerEl.style.setProperty('--vh', `${resizedVh}px`)
+    })
+  },[])
+
   // refresh when component renders for the first time
   useEffect(() => {
     refresh()
@@ -85,7 +96,7 @@ export default function LobbyPage({user}) {
   
   return (
     <>
-      <div>
+      <div className='lobby-container'>
         {proposals.length > 0 
         ?
         <table className='lobby-table'>
@@ -105,7 +116,7 @@ export default function LobbyPage({user}) {
           </tbody>
         </table>
         :
-        <p>There are no active game requests. Choose Your Games to see a list of the games you're currently in. Choose Create Game to create a new game request.</p>
+        <p>There are no games to join.</p>
         }
         <div className='lobby-button'>
           <button onClick={createProposal}>Create Game</button>

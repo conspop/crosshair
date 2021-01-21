@@ -1,20 +1,6 @@
-/* .lobby-table {
-  width: 90%;
-  margin: 0 auto;
-  border-collapse: collapse;
+.lobby-container {
+  padding: 0 5%;
 }
-
-th.lobby-table {
-  width: 50%;
-  text-align: center;
-  border: 1px solid black;
-}
-
-td.lobby-table {
-  width: 50%;
-  text-align: center;
-  border: 1px solid black;
-} */
 
 .lobby-button {
   text-align: center;

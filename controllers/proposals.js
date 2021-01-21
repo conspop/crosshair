@@ -17,7 +17,7 @@ async function index(req, res) {
 async function create(req, res) {
   const proposal = new Proposal({playerId: req.user._id, name: req.user.username})
   await proposal.save()
-  res.json('ok')
+  res.end()
 }
 
 async function acceptProposal(req, res) {

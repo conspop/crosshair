@@ -21,6 +21,17 @@ export default function Games({user}) {
   },[refresh])
 
   useEffect(() => {
+    let vh = window.innerHeight * 0.01
+    let appContainerEl = document.querySelector('.app-container')
+    appContainerEl.style.setProperty('--vh', `${vh}px`)
+
+    window.addEventListener('resize', () => {
+      let resizedVh = window.innerHeight * 0.01
+      appContainerEl.style.setProperty('--vh', `${resizedVh}px`)
+    })
+  },[])
+
+  useEffect(() => {
     const interval = setInterval(() => {
       refresh()
     }, 3000)
@@ -29,7 +40,7 @@ export default function Games({user}) {
 
   return (
     <div>
-      {games ? <GamesList games={games} user={user} /> : 'Loading'}
+      {games ? <GamesList games={games} user={user} /> : ''}
     </div>
   )
 }

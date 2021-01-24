@@ -49,7 +49,9 @@ export default function GamePage({user}) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      refresh()
+      if (player !== turn) {
+        refresh()
+      }
     }, 1000)
     return () => clearInterval(interval)
   })

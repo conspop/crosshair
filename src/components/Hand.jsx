@@ -2,9 +2,12 @@ import React from 'react'
 import Card from './Card'
 
 export default function Hand({hand, selected, handleSelect}) {
+
+  const sortedHand = hand.sort((a, b) => b.number - a.number)
+
   return (
     <div className='hand'>
-      {hand.map((card, index) => {
+      {sortedHand.map((card, index) => {
         return (
           <Card
             card={card}

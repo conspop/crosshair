@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
+import './GamesPage.css'
 
 export default function Games({user}) {
   const [games, setGames] = useState('')
@@ -47,14 +48,38 @@ export default function Games({user}) {
 
 function GamesList({games, user}) {
   return (
-    <table>
-      <tr>
-        <th>Opponent</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-      {games.map(game => <GamesListItem game={game} user={user} />)}
-    </table>
+    <div className='games-list-container'>
+      <h2>Your Turn</h2>
+      <table>
+        <tr>
+          <th>Opponent</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+        {games.filter(game => (game.scoreboard === null) && (user.username === game.playerOneName) === game.turn)
+        .map(game => <GamesListItem game={game} user={user} />)}
+      </table>
+      <h2>Their Turn</h2>
+      <table>
+        <tr>
+          <th>Opponent</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+        {games.filter(game => (game.scoreboard === null) && (user.username === game.playerOneName) !== game.turn)
+        .map(game => <GamesListItem game={game} user={user} />)}
+      </table>
+      <h2>Completed</h2>
+      <table>
+        <tr>
+          <th>Opponent</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+        {games.filter(game => (game.scoreboard !== null))
+        .map(game => <GamesListItem game={game} user={user} />)}
+      </table>
+    </div>
   )
 }
 

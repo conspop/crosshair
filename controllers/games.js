@@ -10,16 +10,29 @@ module.exports = {
   calculateHandValues,
   buildScoreboard,
   chooseWinnerAndLoser,
-  buildResultObject
+  buildResultObject,
+  updateVersion
 };
 
 // this adjusts how big the swing for wins and losses
 KFACTOR = 32
+VERSION = '2.4'
+
+async function updateVersion(req, res) {
+  const user = await User.findById(req.user._id)
+  user.version = VERSION
+  user.save()
+  res.end()
+}
 
 async function index(req, res) {
-  console.log('got here')
   const {games} = await User.findById(req.user._id).populate('games')
   res.json(games)
+}
+
+async function show(req, res) {
+  const game = await Game.findById(req.params.gameId)
+  res.json({game, version: VERSION})
 }
 
 async function newGame(req, res) {
@@ -115,10 +128,6 @@ async function playCard(req, res) {
   res.end()
 }
 
-async function show(req, res) {
-  const game = await Game.findById(req.params.gameId)
-  res.json(game)
-}
 
 function buildScoreboard({board}) {
   const playerOneHandIndexesArray = [

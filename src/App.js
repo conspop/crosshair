@@ -65,7 +65,7 @@ export default function App() {
               userService.getUser() ? <LeaderboardPage user={user} /> : <Redirect to ='/login' />
             )}/>
             <Route exact path='/games/:gameId' render={() => (
-              userService.getUser() ? <GamePage user={user} /> : <Redirect to ='/login' />
+              userService.getUser() ? <GamePage user={user} logout={handleLogout} /> : <Redirect to ='/login' />
             )}/>
           </div>
         </>

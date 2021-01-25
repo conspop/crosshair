@@ -7,7 +7,7 @@ import Board from '../components/Board'
 import Hand from '../components/Hand'
 import Scoreboard from '../components/Scoreboard'
 
-export default function GamePage({user}) {
+export default function GamePage({user, logout}) {
   const {gameId} = useParams()
 
   const [id, setId] = useState('')
@@ -28,16 +28,27 @@ export default function GamePage({user}) {
       }
     })
     .then(response => {
-      console.log(response.data.lastPlayed)
-      const dataPlayer = response.data.playerOneName === user.username ? true : false
-      setId(response.data._id)
-      setBoard(response.data.board)
+      console.log(response.data)
+      const dataPlayer = response.data.game.playerOneName === user.username ? true : false
+      setId(response.data.game._id)
+      setBoard(response.data.game.board)
       setPlayer(dataPlayer)
-      setHand(dataPlayer ? response.data.playerOneHand : response.data.playerTwoHand)
-      setOpponent(dataPlayer ? response.data.playerTwoName : response.data.playerOneName)
-      setTurn(response.data.turn)
-      setScoreboard(response.data.scoreboard)
-      setLastPlayed(response.data.lastPlayed)
+      setHand(dataPlayer ? response.data.game.playerOneHand : response.data.game.playerTwoHand)
+      setOpponent(dataPlayer ? response.data.game.playerTwoName : response.data.game.playerOneName)
+      setTurn(response.data.game.turn)
+      setScoreboard(response.data.game.scoreboard)
+      setLastPlayed(response.data.game.lastPlayed)
+      console.log(response.data.version)
+      console.log(user.version)
+      if (response.data.version !== user.version) {
+        axios.post('/api/games/updateVersion', {token: tokenService.getToken()})
+        .then(() => {
+          window.location.reload()
+          logout()
+        })
+        .catch(error => {console.log(error.message)})
+      }
+      
     })
     .catch(() => console.log('Something went wrong!'))
   },[gameId, user.username])

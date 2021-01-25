@@ -4,7 +4,7 @@ const SECRET = process.env.SECRET;
 
 module.exports = {
   signup,
-  login,
+  login
 };
 
 async function signup(req, res) {
@@ -45,3 +45,4 @@ function createJWT(user) {
     {expiresIn: '90 days'}
   );
 }
+

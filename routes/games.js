@@ -8,5 +8,6 @@ router.get('/:gameId', gamesCtrl.show)
 router.put('/', gamesCtrl.playCard)
 
 router.post('/', gamesCtrl.newGame)
+router.post('/updateVersion', gamesCtrl.updateVersion)
 
 module.exports = router;

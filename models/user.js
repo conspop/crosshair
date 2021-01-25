@@ -17,8 +17,8 @@ const userSchema = new Schema({
     opponent: String,
     isWin: Boolean,
     endingELO: Number
-  }]
-
+  }],
+  version: String
 });
 
 userSchema.pre('save', function(next) {

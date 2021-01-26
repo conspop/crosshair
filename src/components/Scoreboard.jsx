@@ -76,10 +76,10 @@ function ScoreboardHand({hand, isWin}) {
     2: 'Pair',
     3: '2 Pair',
     4: '3 Of A Kind',
-    5: 'Stright',
+    5: 'Straight',
     6: 'Flush',
     7: 'Full House',
-    8: '4 Of A King',
+    8: '4 Of A Kind',
     9: 'Straight Flush',
     10: 'Royal Flush'
   } 

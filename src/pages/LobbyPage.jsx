@@ -116,7 +116,7 @@ export default function LobbyPage({user}) {
           </tbody>
         </table>
         :
-        <p>There are no games to join.</p>
+        ''
         }
         <div className='lobby-button'>
           <button onClick={createProposal}>Create Game</button>

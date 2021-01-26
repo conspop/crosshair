@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
+import './LeaderboardPage.css'
 
 export default function LeaderboardPage({user}) {
   const [leaderboard, setLeaderboard] = useState('')
@@ -21,7 +22,7 @@ export default function LeaderboardPage({user}) {
   return (
     <>
       <>
-      <div>
+      <div className='leaderboard-container'>
         {leaderboard.length > 0 
         ?
         <table className='leaderboard-table'>

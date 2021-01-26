@@ -45,7 +45,6 @@ export default function GamePage({user, logout}) {
         })
         .catch(error => {console.log(error.message)})
       }
-      
     })
     .catch(() => console.log('Something went wrong!'))
   },[gameId, user.username])
@@ -130,7 +129,10 @@ export default function GamePage({user, logout}) {
   return (
     <>
       <div className='game-container'>
-        {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
+        <div className='opponent-and-turn'>
+          {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
+          <p>vs. {opponent}</p>
+        </div>
         <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />
         {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
       </div>

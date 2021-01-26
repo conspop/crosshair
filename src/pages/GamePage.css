@@ -7,6 +7,20 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  --card-size: calc(min(14vw, 90px));
+  --board-gap-size: calc(min(7vw, 20px));
+}
+
+.opponent-and-turn {
+  width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+}
+
+.game-container p {
+  margin: 0;
+  font-size: 1.5rem;
 }
 
 .turn {
@@ -14,12 +28,10 @@
 }
 
 .board {
-  --card-size: 57px;
-  --gap-size: 18px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, var(--card-size) var(--gap-size)) var(--card-size);
-  grid-template-rows: repeat(4, var(--card-size) var(--gap-size)) var(--card-size);
+  grid-template-columns: repeat(4, var(--card-size) var(--board-gap-size)) var(--card-size);
+  grid-template-rows: repeat(4, var(--card-size) var(--board-gap-size)) var(--card-size);
   justify-items: center;
   align-items: center;
 }
@@ -27,25 +39,25 @@
 .column-line {
   position: relative;
   z-index: -1;
-  height: 10px ; 
-  width: var(--gap-size); 
+  height: calc(.25 * var(--card-size)) ; 
+  width: var(--board-gap-size); 
 }
 
 .row-line {
   position: relative;
   z-index: -1;
-  height: var(--gap-size);
-  width: 50px; 
+  height: var(--board-gap-size);
+  width: calc(.8 * var(--card-size)); 
 }
 
 .hand {
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(6, 54px);
-  grid-template-rows: repeat(2, 54px);
+  grid-template-columns: repeat(6, var(--card-size));
+  grid-template-rows: repeat(2, var(--card-size));
   justify-items: center;
   align-items: center;
-  gap: 7.2px;
+  gap: calc(.5 * var(--board-gap-size));
 }
 
 .card {
@@ -56,6 +68,24 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+}
+
+@media (min-width: 1000px) {
+  .game-container {
+    flex-direction: row;
+    --card-size: calc(min(14vw, 85px));
+    --board-gap-size: calc(min(7vw, 20px));
+  }
+
+  .opponent-and-turn {
+    flex-direction: column;
+    width: auto;
+  }
+
+  .hand {
+    grid-template-columns: repeat(2, var(--card-size));
+    grid-template-rows: repeat(6, var(--card-size));
+  }
 }
 
 

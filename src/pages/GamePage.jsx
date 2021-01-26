@@ -28,7 +28,6 @@ export default function GamePage({user, logout}) {
       }
     })
     .then(response => {
-      console.log(response.data)
       const dataPlayer = response.data.game.playerOneName === user.username ? true : false
       setId(response.data.game._id)
       setBoard(response.data.game.board)
@@ -38,8 +37,6 @@ export default function GamePage({user, logout}) {
       setTurn(response.data.game.turn)
       setScoreboard(response.data.game.scoreboard)
       setLastPlayed(response.data.game.lastPlayed)
-      console.log(response.data.version)
-      console.log(user.version)
       if (response.data.version !== user.version) {
         axios.post('/api/games/updateVersion', {token: tokenService.getToken()})
         .then(() => {

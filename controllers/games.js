@@ -16,7 +16,7 @@ module.exports = {
 
 // this adjusts how big the swing for wins and losses
 KFACTOR = 32
-VERSION = '2.4'
+VERSION = '2.0'
 
 async function updateVersion(req, res) {
   const user = await User.findById(req.user._id)

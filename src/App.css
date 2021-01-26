@@ -7,6 +7,7 @@
 
 .header-container {
   height:10%;
+  padding: 5% 5%;
 }
 
 .header-top-line {
@@ -36,8 +37,16 @@ table {
 }
 
 td, th {
-  border: 1px solid black;
   text-align: center;
+  line-height: 1.5rem;
+}
+
+th {
+  border-bottom: 2px solid black;
+}
+
+td {
+  border-bottom: 1px solid black;
 }
 
 p {

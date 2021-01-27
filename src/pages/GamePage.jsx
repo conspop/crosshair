@@ -9,7 +9,6 @@ import Scoreboard from '../components/Scoreboard'
 
 export default function GamePage({user, logout}) {
   const {gameId} = useParams()
-
   const [id, setId] = useState('')
   const [board, setBoard] = useState(Array(25).fill(''))
   const [player, setPlayer] = useState('')
@@ -19,6 +18,7 @@ export default function GamePage({user, logout}) {
   const [scoreboard, setScoreboard] = useState('')
   const [selected, setSelected] = useState('')
   const [lastPlayed, setLastPlayed] = useState('')
+  const [resign, setResign] = useState('')
 
   const refresh = useCallback(() => {
     axios.get(`/api/games/${gameId}`, {
@@ -126,15 +126,39 @@ export default function GamePage({user, logout}) {
     }
   }
 
+  const handleResignGame = () => {
+
+    setResign(user.username)
+
+    const updateObject = {
+      token: tokenService.getToken(),
+      id,
+      resign: user.username,
+      opponent: opponent
+    }
+
+    axios.put('/api/games/resign', updateObject)
+    .then(() => {console.log('Resigned!')})
+    .catch(() => {
+      console.log('Something went wrong!')
+      setResign('')
+    })
+  }
+
+  const cardsPlayed = board.filter(card => card !== '').length
+
   return (
     <>
       <div className='game-container'>
         <div className='opponent-and-turn'>
-          {scoreboard ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
+          {scoreboard || resign ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
           <p>vs. {opponent}</p>
+          {cardsPlayed > 11 && !scoreboard ? <ResignButton handleResignGame={handleResignGame} /> : undefined}
         </div>
         <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />
-        {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : <Hand hand={hand} selected={selected} handleSelect={handleSelect} />}
+        {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : ''}
+        {resign ? <h2>{resign} resigned</h2> : ''}
+        {!scoreboard && !resign ? <Hand hand={hand} selected={selected} handleSelect={handleSelect} /> : ''}
       </div>
     </>
   )
@@ -147,4 +171,30 @@ function Turn({player, turn, opponent}) {
   } else {
     return <div className='turn'>{opponent}'s Turn</div>
   }
+}
+
+function ResignButton({handleResignGame}) {
+  const [showResign, setShowResign] = useState(true)
+  const [areYouSure, setAreYouSure] = useState(false)
+
+  const handleResign = () => {
+    setAreYouSure(true)
+    setTimeout(() => {setAreYouSure(false)}, 1000)
+  }
+
+  const handleConfirmResign = () => {
+    handleResignGame()
+    setShowResign(false)
+  }
+
+  if (showResign) {
+    if (areYouSure) {
+      return <button onClick={handleConfirmResign}>Are you sure?</button>
+    } else {
+      return <button onClick={handleResign}>Resign</button>
+    }
+  } else {
+    return ''
+  }
+  
 }

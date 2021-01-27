@@ -10,7 +10,8 @@ const gameSchema = new Schema({
   board: [],
   turn: Boolean,
   lastPlayed: Number,
-  scoreboard: Schema.Types.Mixed
+  scoreboard: Schema.Types.Mixed,
+  resign: String
 });
 
 module.exports = mongoose.model('Game', gameSchema);

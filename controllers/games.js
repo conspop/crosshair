@@ -11,7 +11,8 @@ module.exports = {
   buildScoreboard,
   chooseWinnerAndLoser,
   buildResultObject,
-  updateVersion
+  updateVersion,
+  resign
 };
 
 // this adjusts how big the swing for wins and losses
@@ -33,6 +34,18 @@ async function index(req, res) {
 async function show(req, res) {
   const game = await Game.findById(req.params.gameId)
   res.json({game, version: VERSION})
+}
+
+async function resign(req, res) {
+  let game = await Game.findById(req.body.id)
+  game.resign = req.body.resign
+  const winnerAndLoser = [
+    req.body.opponent,
+    1,
+    req.body.resign,
+    0
+  ]
+  game.save()
 }
 
 async function newGame(req, res) {
@@ -404,9 +417,6 @@ async function recordResults(winnerAndLoser) {
   const winner = await User.findOne({username: winnerAndLoser[0]})
   const loser = await User.findOne({username: winnerAndLoser[2]})
 
-  console.log(winner)
-  console.log(loser)
-
   let winnerOldELO
   let loserOldELO
   if (winner.results.length > 0) {
@@ -454,3 +464,5 @@ function calculateNewELO(playerOldELO, opponentOldELO, kFactor, isWin) {
 
   return playerNewELO
 }
+
+

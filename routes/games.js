@@ -6,6 +6,7 @@ router.get('/', gamesCtrl.index)
 router.get('/:gameId', gamesCtrl.show)
 
 router.put('/', gamesCtrl.playCard)
+router.put('/resign', gamesCtrl.resign)
 
 router.post('/', gamesCtrl.newGame)
 router.post('/updateVersion', gamesCtrl.updateVersion)

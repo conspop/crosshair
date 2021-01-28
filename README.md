@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# CROSSHAIR
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Links
 
-## Available Scripts
+[Github Repo](https://github.com/conspop/crosshair)
 
-In the project directory, you can run:
+[Deployed App](https://crosshairgame.herokuapp.com)
 
-### `npm start`
+To play:
+- Sign up for an account
+- Read the instructions
+- Create a game in the lobby or join an existing game
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Description
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Crosshair is a poker-based card game invented by a couple of my friends that I've adapted as a turn-based multiplayer web-app.
 
-### `npm test`
+The game has a lobby where you can create or join existing games, supports playing multiple games at the same time and a leaderboard that ranks players using the ELO ranking system.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I am adding features continuously as Crosshair's users request them.
 
-### `npm run build`
+## Technologies Used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Mongo DB
+- Express
+- React JS
+- Node JS
+- HTML/CSS/Javascript
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Screenshots
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Lobby
 
-### `npm run eject`
+Users can create games and join games that other people have created.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<img src='https://github.com/conspop/crosshair/blob/main/screenshots/lobby.png'>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Games
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Users games are listed and separated by completed games, your turn and their turn.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<img src='https://github.com/conspop/crosshair/blob/main/screenshots/games.png'>
 
-## Learn More
+### Game
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The gameplay is smooth and responsive.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<img src='https://github.com/conspop/crosshair/blob/main/screenshots/game.png'>
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Adding Classes
 
-### Analyzing the Bundle Size
+Players are ranked on a leaderboard using the ELO method.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<img src='https://github.com/conspop/fit-pro/blob/main/screenshots/leaderboard.png'>
 
-### Making a Progressive Web App
+## Next Steps
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- I will implement a challenge system where a user can challenge a specific opponent rather than create a game that anyone can join
+- I will implement some sort of weekly tournament system that matches users up with other users
+- I will implement a chat into each game
+- I am receiving feature requests from Crosshair's users to improve the game!
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

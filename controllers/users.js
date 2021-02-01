@@ -7,7 +7,7 @@ module.exports = {
   login
 };
 
-VERSION = '2.3 - Working Resign Functionality'
+VERSION = '2.4 - Fix Resign Function and Reverse Completed Order'
 
 async function signup(req, res) {
   console.log(req.body)

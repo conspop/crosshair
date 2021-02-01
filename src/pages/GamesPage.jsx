@@ -56,7 +56,7 @@ function GamesList({games, user}) {
           <th>Status</th>
           <th></th>
         </tr>
-        {games.filter(game => (game.scoreboard === null) && (user.username === game.playerOneName) === game.turn)
+        {games.filter(game => (game.scoreboard === null) && (!game.resign) && (user.username === game.playerOneName) === game.turn)
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
       <h2>Their Turn</h2>
@@ -66,7 +66,7 @@ function GamesList({games, user}) {
           <th>Status</th>
           <th></th>
         </tr>
-        {games.filter(game => (game.scoreboard === null) && (user.username === game.playerOneName) !== game.turn)
+        {games.filter(game => (game.scoreboard === null) && (!game.resign) && (user.username === game.playerOneName) !== game.turn)
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
       <h2>Completed</h2>
@@ -76,7 +76,7 @@ function GamesList({games, user}) {
           <th>Status</th>
           <th></th>
         </tr>
-        {games.filter(game => (game.scoreboard !== null))
+        {games.filter(game => (game.scoreboard !== null) || (game.resign))
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
     </div>

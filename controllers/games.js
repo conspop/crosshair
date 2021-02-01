@@ -45,7 +45,8 @@ async function resign(req, res) {
     req.body.resign,
     0
   ]
-  game.save()
+  await recordResults(winnerAndLoser)
+  await game.save()
 }
 
 async function newGame(req, res) {

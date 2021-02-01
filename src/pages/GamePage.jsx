@@ -37,6 +37,7 @@ export default function GamePage({user, logout}) {
       setTurn(response.data.game.turn)
       setScoreboard(response.data.game.scoreboard)
       setLastPlayed(response.data.game.lastPlayed)
+      setResign(response.data.game.resign)
       if (response.data.version !== user.version) {
         axios.post('/api/games/updateVersion', {token: tokenService.getToken()})
         .then(() => {
@@ -153,7 +154,7 @@ export default function GamePage({user, logout}) {
         <div className='opponent-and-turn'>
           {scoreboard || resign ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
           <p>vs. {opponent}</p>
-          {cardsPlayed > 11 && !scoreboard ? <ResignButton handleResignGame={handleResignGame} /> : undefined}
+          {cardsPlayed > 11 && !scoreboard && !resign ? <ResignButton handleResignGame={handleResignGame} /> : undefined}
         </div>
         <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />
         {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : ''}

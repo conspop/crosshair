@@ -76,7 +76,7 @@ function GamesList({games, user}) {
           <th>Status</th>
           <th></th>
         </tr>
-        {games.filter(game => (game.scoreboard !== null) || (game.resign))
+        {games.filter(game => (game.scoreboard !== null) || (game.resign)).reverse()
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
     </div>

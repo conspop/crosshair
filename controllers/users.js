@@ -7,9 +7,12 @@ module.exports = {
   login
 };
 
+VERSION = '2.3 - Working Resign Functionality'
+
 async function signup(req, res) {
   console.log(req.body)
   const user = new User(req.body);
+  user.version = VERSION
   try {
     await user.save();
     const token = createJWT(user);

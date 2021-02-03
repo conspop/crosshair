@@ -70,22 +70,4 @@
   align-items: center;
 }
 
-@media (min-width: 1000px) {
-  .game-container {
-    flex-direction: row;
-    --card-size: calc(min(14vw, 85px));
-    --board-gap-size: calc(min(7vw, 20px));
-  }
-
-  .opponent-and-turn {
-    flex-direction: column;
-    width: auto;
-  }
-
-  .hand {
-    grid-template-columns: repeat(2, var(--card-size));
-    grid-template-rows: repeat(6, var(--card-size));
-  }
-}
-
 

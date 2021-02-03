@@ -51,31 +51,16 @@ function GamesList({games, user}) {
     <div className='games-list-container'>
       <h2>Your Turn</h2>
       <table>
-        <tr>
-          <th>Opponent</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
         {games.filter(game => (game.scoreboard === null) && (!game.resign) && (user.username === game.playerOneName) === game.turn)
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
       <h2>Their Turn</h2>
       <table>
-        <tr>
-          <th>Opponent</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
         {games.filter(game => (game.scoreboard === null) && (!game.resign) && (user.username === game.playerOneName) !== game.turn)
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
       <h2>Completed</h2>
       <table>
-        <tr>
-          <th>Opponent</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
         {games.filter(game => (game.scoreboard !== null) || (game.resign)).reverse()
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
@@ -87,8 +72,7 @@ function GamesListItem({game, user}) {
   return (
     <tr>
       <td><Opponent game={game} user={user} /></td>
-      <td><Status game={game} user={user} /></td>
-      <td><GameLink game={game} /></td>
+      <td><GameLink game={game} user={user} /></td>
     </tr>
   )
 }
@@ -115,17 +99,17 @@ function Status({game, user}) {
     if (player === turn) {
       return 'Your Turn'
     } else {
-      return `${opponent}'s Turn`
+      return `Their Turn`
     }
   }
 }
 
-function GameLink({game:{_id}}) {
+function GameLink({game, user}) {
   return (
     <Link
-      to={`/games/${_id}`}
-      key={_id}
-    >Link
+      to={`/games/${game._id}`}
+      key={game._id}
+    ><Status game={game} user={user} />
     </Link>
   )
 }

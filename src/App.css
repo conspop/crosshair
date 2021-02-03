@@ -1,5 +1,7 @@
-html {
+:root {
   font-size: min(4vw, 25px);
+  color: white;
+  background-color: black;
 }
 
 .app-container {
@@ -9,25 +11,25 @@ html {
 }
 
 .header-container {
-  height:10%;
   padding: 4% 5%;
   border-bottom: 1px solid black;
-}
-
-.header-top-line {
   display: flex;
   justify-content: space-between;
 }
 
 .header-nav {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  margin: 1.8rem 0 0 0;
+  justify-content: space-evenly;
 }
 
-.header-nav a {
+a {
   text-decoration: none;
-  color: black;
+  color: white;
+}
+
+a:visited {
+  color: white;
 }
 
 .page-container {
@@ -47,16 +49,16 @@ table {
 
 td, th {
   text-align: center;
-  line-height: 1.5rem;
+  line-height: 2.5rem;
 }
 
 th {
   border-bottom: 2px solid black;
 }
 
-td {
+/* td {
   border-bottom: 1px solid black;
-}
+} */
 
 p {
   text-align: center;

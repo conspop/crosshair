@@ -29,7 +29,8 @@ export default function LeaderboardPage({user}) {
           <tbody>
             <tr>
               <th>Player</th>
-              <th>ELO</th>
+              <th>Last</th>
+              <th>Rating</th>
             </tr>
             {leaderboard.map(player => 
               <Player 

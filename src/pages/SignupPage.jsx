@@ -35,32 +35,35 @@ class SignupPage extends Component {
   render() {
     return (
       <>
-        <label>Username</label>
+        <label style={{marginTop: '10px'}}>Username</label>
         <input 
           name='username'
           value={this.state.username}
           onChange={this.handleChange}
+          style={{marginTop: '10px'}}
         />
-        <label>Password</label> 
+        <label style={{marginTop: '10px'}}>Password</label> 
         <input 
           name='password'
           value={this.state.password}
           onChange={this.handleChange}
           type='password'
+          style={{marginTop: '10px'}}
         />
-        <label>Confirm Password</label>
+        <label style={{marginTop: '10px'}}>Confirm Password</label>
         <input 
           name='confirmPassword'
           value={this.state.confirmPassword}
           onChange={this.handleChange}
           type='password'
+          style={{marginTop: '10px'}}
         />
         {
           this.state.message !== '' ?
           <div className='signup-message'>{this.state.message}</div> :
           ''
         }
-        <div className="button-container">
+        <div className="button-container" style={{marginTop: '10px'}}>
           <button
             className='add-button'
             onClick={this.handleSubmit}

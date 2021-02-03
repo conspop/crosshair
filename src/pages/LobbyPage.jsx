@@ -119,6 +119,8 @@ export default function LobbyPage({user}) {
         ''
         }
         <div className='lobby-button'>
+          {proposals.length > 0 ? <hr /> : ''}
+          {proposals.length < 1 ? <p>There are no games to join.</p> : ''}
           <button onClick={createProposal}>Create Game</button>
         </div>
       </div>

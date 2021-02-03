@@ -8,7 +8,7 @@
   justify-content: space-evenly;
   align-items: center;
   --card-size: calc(min(14vw, 90px));
-  --board-gap-size: calc(min(7vw, 20px));
+  --board-gap-size: calc(min(4.67vh, 20px));
 }
 
 .opponent-and-turn {
@@ -27,6 +27,12 @@
   font-size: 1.25rem;
 }
 
+.board-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .board {
   margin: 0 auto;
   display: grid;
@@ -41,6 +47,7 @@
   z-index: -1;
   height: calc(.25 * var(--card-size)) ; 
   width: var(--board-gap-size); 
+  opacity: 0.85;
 }
 
 .row-line {
@@ -48,6 +55,7 @@
   z-index: -1;
   height: var(--board-gap-size);
   width: calc(.8 * var(--card-size)); 
+  opacity: 0.85;
 }
 
 .hand {
@@ -57,7 +65,8 @@
   grid-template-rows: repeat(2, var(--card-size));
   justify-items: center;
   align-items: center;
-  gap: calc(.5 * var(--board-gap-size));
+  gap: calc(.11 * var(--card-size));
+  align-items: center;
 }
 
 .card {
@@ -68,6 +77,29 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  box-shadow: 0 8px 6px -6px black;
+}
+
+.resign-button {
+  background-color: red;
+  border: none;
+  opacity: 0.85;
+  height: 2rem;
+  width: 45%;
+  color: white;
+  border-radius: 2.5px;
+  font-weight: bold;
+}
+
+.next-turn-button {
+  background-color: green;
+  border: none;
+  opacity: 0.85;
+  height: 2rem;
+  width: 45%;
+  color: white;
+  border-radius: 2.5px;
+  font-weight: bold;
 }
 
 

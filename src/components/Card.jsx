@@ -28,15 +28,16 @@ export default function Card({card, index, handleClick, selected, lastPlayed}) {
 
   let cardBorder
   if (selected) {
-    cardBorder = '4px solid green'
+    cardBorder = '6px solid rgba(0,128,0,0.60)'
   } else if (lastPlayed) {
-    cardBorder = '4px solid black'
+    cardBorder = '6px solid rgba(255,255,0,0.60)'
   } else {
-    cardBorder = '1px solid black'
+    cardBorder = 'none'
   }
 
   const cardStyle = {
-    backgroundColor: (card === '') ? 'lightgrey' : 'white',
+    backgroundColor: (card === '') ? 'rgba(191, 191, 191, 0.25)' : 'white',
+    boxShadow: (card === '') ? 'none' : '0 8px 6px -6px black',
     color: (suit === 'S' || suit === 'C') ? 'black' : 'red',
     border: cardBorder
   }

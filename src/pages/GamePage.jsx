@@ -151,11 +151,11 @@ export default function GamePage({user, logout}) {
   return (
     <>
       <div className='game-container'>
-        <div className='opponent-and-turn'>
-          {scoreboard || resign ? '' : <Turn player={player} turn={turn} opponent={opponent} />}
-          <p>vs. {opponent}</p>
-          {cardsPlayed > 11 && !scoreboard && !resign ? <ResignButton handleResignGame={handleResignGame} /> : undefined}
+        <div style={{width: '100%', height: '5vh', display: 'flex', justifyContent: 'space-evenly'}}>
+          <ResignButton handleResignGame={handleResignGame} />
+          <button className='next-turn-button'>Next Turn</button>
         </div>
+        <Turn user={user} player={player} turn={turn} opponent={opponent} />
         <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />
         {scoreboard ? <Scoreboard scoreboard={scoreboard} player={player} user={user} opponent={opponent} /> : ''}
         {resign ? <h2>{resign} resigned</h2> : ''}
@@ -166,12 +166,17 @@ export default function GamePage({user, logout}) {
 
 }
 
-function Turn({player, turn, opponent}) {
-  if (player === turn) {
-    return <div className='turn'>Your Turn</div>
-  } else {
-    return <div className='turn'>{opponent}'s Turn</div>
-  }
+function Turn({user, player, turn, opponent}) {
+  return (
+    <div style={{display:'flex', width:'100%', fontSize:'1.25rem', height: '5vh', alignItems:'center'}}>
+      <div style={{width:'40%', textAlign:'center'}}>{user.username}</div>
+      <div style={{width:'20%', textAlign:'center'}}>
+        {player === turn ? <i className="fas fa-chevron-left"></i> : <i className="fas fa-chevron-right"></i>}
+      </div>
+      <div style={{width:'40%', textAlign:'center'}}>{opponent}</div>
+    </div>
+  )
+  
 }
 
 function ResignButton({handleResignGame}) {
@@ -190,9 +195,9 @@ function ResignButton({handleResignGame}) {
 
   if (showResign) {
     if (areYouSure) {
-      return <button onClick={handleConfirmResign}>Are you sure?</button>
+      return <button className='resign-button' onClick={handleConfirmResign}>Are you sure?</button>
     } else {
-      return <button onClick={handleResign}>Resign</button>
+      return <button className='resign-button' onClick={handleResign}>Resign</button>
     }
   } else {
     return ''

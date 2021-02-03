@@ -91,6 +91,10 @@
   font-weight: bold;
 }
 
+.resign-button:disabled {
+  opacity: 0.25;
+}
+
 .next-turn-button {
   background-color: green;
   border: none;

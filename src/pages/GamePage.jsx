@@ -152,8 +152,7 @@ export default function GamePage({user, logout}) {
     <>
       <div className='game-container'>
         <div style={{width: '100%', height: '5vh', display: 'flex', justifyContent: 'space-evenly'}}>
-          <ResignButton handleResignGame={handleResignGame} />
-          <button className='next-turn-button'>Next Turn</button>
+          <ResignButton handleResignGame={handleResignGame} cardsPlayed={cardsPlayed} />
         </div>
         <Turn user={user} player={player} turn={turn} opponent={opponent} />
         <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />
@@ -179,7 +178,7 @@ function Turn({user, player, turn, opponent}) {
   
 }
 
-function ResignButton({handleResignGame}) {
+function ResignButton({handleResignGame, cardsPlayed}) {
   const [showResign, setShowResign] = useState(true)
   const [areYouSure, setAreYouSure] = useState(false)
 
@@ -197,7 +196,7 @@ function ResignButton({handleResignGame}) {
     if (areYouSure) {
       return <button className='resign-button' onClick={handleConfirmResign}>Are you sure?</button>
     } else {
-      return <button className='resign-button' onClick={handleResign}>Resign</button>
+      return <button disabled={cardsPlayed < 12 ? true : false} className='resign-button' onClick={handleResign}>Resign</button>
     }
   } else {
     return ''

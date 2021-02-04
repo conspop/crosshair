@@ -97,31 +97,25 @@ export default function LobbyPage({user}) {
   return (
     <>
       <div className='lobby-container'>
+        <h1>Lobby</h1>
+        <p>If you're looking for a game, join one of the games that another player created below. If their aren't any, create one and check back in a little bit. You'll be playing in no time.</p>
         {proposals.length > 0 
         ?
-        <table className='lobby-table'>
-          <tbody>
-            <tr>
-              <th>Player</th>
-              <th></th>
-            </tr>
-            {proposals.map((proposal, index) => 
-              <Proposal 
-                proposal={proposal} 
-                acceptProposal={acceptProposal}
-                index={index}
-                user={user}
-              />
-            )}
-          </tbody>
-        </table>
+        <div className='created-game-list'>
+          {proposals.map((proposal, index) => 
+            <Proposal 
+              proposal={proposal} 
+              acceptProposal={acceptProposal}
+              index={index}
+              user={user}
+            />
+          )}
+        </div>
         :
         ''
         }
         <div className='lobby-button'>
-          {proposals.length > 0 ? <hr /> : ''}
-          {proposals.length < 1 ? <p>There are no games to join.</p> : ''}
-          <button onClick={createProposal}>Create Game</button>
+          <button className='create-game-button' onClick={createProposal}>Create Game</button>
         </div>
       </div>
     </>
@@ -134,27 +128,18 @@ function Proposal({proposal, acceptProposal, index, user}) {
     acceptProposal(index, name)
   }
   
-  if (user.username !== proposal.name) {
-    return (
-      <tr>
-        <td>{proposal.name}</td>
-        <td>
-          <button 
-            data-name={proposal.name}
-            data-index={index} 
-            onClick={handleClick}
-          >
-            Join Game
-          </button>
-        </td>
-      </tr>
-    )
-  } else {
-    return (
-      <tr>
-        <td>{proposal.name}</td>
-        <td></td>
-      </tr>
-    )
-  }
+  return (
+    <>
+      <div>{proposal.name} ({proposal.endingELO})</div>
+      <div>
+        <button 
+          data-name={proposal.name}
+          data-index={index} 
+          onClick={handleClick}
+        >
+          Join
+        </button>
+      </div>
+    </>
+  )
 }

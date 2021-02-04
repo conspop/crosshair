@@ -92,7 +92,7 @@
 }
 
 .resign-button:disabled {
-  opacity: 0.25;
+  opacity: 0.40;
 }
 
 .next-turn-button {

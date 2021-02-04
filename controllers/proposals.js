@@ -11,11 +11,19 @@ module.exports = {
 
 async function index(req, res) {
   const proposals = await Proposal.find({}).populate('player')
+  // console.log(proposals)
+  for (let i = 0; i < proposals.length; i++) {
+    const user = await User.findById(proposals[i].playerId)
+    proposals[i].endingELO = user.results[user.results.length - 1].endingELO || 1500
+  }
   res.json(proposals)
 }
 
 async function create(req, res) {
-  const proposal = new Proposal({playerId: req.user._id, name: req.user.username})
+  const user = await User.findById(req.user._id)
+  const endingELO = user.results[user.results.length - 1].endingELO
+  console.log(endingELO)
+  const proposal = new Proposal({playerId: req.user._id, name: req.user.username, endingELO})
   await proposal.save()
   res.end()
 }

@@ -7,7 +7,8 @@ const proposalSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  name: String
+  name: String,
+  endingELO: Number
 });
 
 module.exports = mongoose.model('Proposal', proposalSchema);

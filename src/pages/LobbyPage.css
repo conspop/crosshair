@@ -5,3 +5,34 @@
 .lobby-button {
   text-align: center;
 }
+
+.created-game-list {
+  width: calc(100%-1rem);
+  background-color: rgba(191, 191, 191, 0.5);
+  border-radius: 2.5px;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  padding: .5rem;
+  align-content: center;
+  row-gap: 1rem;
+}
+
+.created-game-list button {
+  background-color: green;
+  border: none;
+  width: 100%;
+  font-weight: bold;
+  color: white;
+  border-radius: 2.5px;
+}
+
+.create-game-button {
+  margin-top: 1.5rem;
+  width: 50%;
+  background-color: red;
+  border: none;
+  height: 2rem;
+  color: white;
+  font-weight: bold;
+  border-radius: 2.5px;
+}

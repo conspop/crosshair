@@ -23,7 +23,11 @@ function createLeaderboardObject({username, results}) {
   const leaderboardObject = {
     name: username,
     ELO: lastResult.endingELO,
-    ELOChange: lastResult.endingELO - lastResult.beginningELO
+    isWin: lastResult.isWin,
+    opponent: lastResult.opponent,
+    ELOChange: lastResult.endingELO - lastResult.beginningELO,
+    date: lastResult.date,
+    numberResults: results.length
   }
   return leaderboardObject
 }

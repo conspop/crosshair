@@ -12,7 +12,11 @@ export default function Header({user, handleLogout}) {
             <Link to='/games'>Games</Link>
             <Link to='/leaderboard'>Ranks</Link>
           </div>
-          : false}
+          : 
+          <div className='header-nav'>
+            <Link to='/login'>Login</Link>
+            <Link to='/signup'>Signup</Link>
+          </div>}
         <div style={{width: '4rem', display:'flex', justifyContent:'space-between'}}>
           <div><Auth user={user} handleLogout={handleLogout} /></div>
           <Link to='/how-to-play'><i class="fas fa-question-circle"></i></Link>

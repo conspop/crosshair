@@ -1,3 +1,16 @@
 .leaderboard-container {
   padding: 0 5%;
 }
+
+.leaderboard-line {
+  width: calc(100%-1rem);
+  height: 4rem;
+  background-color: rgba(191, 191, 191, 0.5);
+  border-radius: 2.5px;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  padding: .5rem;
+  align-content: center;
+  row-gap: 1rem;
+  margin-bottom: .5rem;
+}

@@ -64,7 +64,8 @@ async function newGame(req, res) {
     playerTwoHand: dealCards(shuffledDeck, 12),
     board: createBoard(shuffledDeck),
     turn: chooseFirstTurn(),
-    scoreboard: null
+    scoreboard: null,
+    lastPlayTime: new Date()
   })
   await game.save()
 

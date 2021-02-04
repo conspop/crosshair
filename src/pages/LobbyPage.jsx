@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import tokenService from '../utils/tokenService'
 import './LobbyPage.css'
+import { Redirect } from 'react-router-dom'
 
 export default function LobbyPage({user}) {
   const [proposals, setProposals] = useState('')
+  const [redirect, setRedirect] = useState(false)
 
   const refresh = useCallback(() => {
     axios.get('/api/proposals', {
@@ -93,9 +95,14 @@ export default function LobbyPage({user}) {
       setProposals(oldProposals)
     })
   } 
+
+  const goToGames = () => {
+    setRedirect(true)
+  }
   
   return (
     <>
+      {redirect ? <Redirect to='/games' /> : ''}
       <div className='lobby-container'>
         <h1>Lobby</h1>
         <p>If you're looking for a game, join one below. If there aren't any, create one and check back in a little bit. You'll be playing in no time.</p>
@@ -108,6 +115,7 @@ export default function LobbyPage({user}) {
               acceptProposal={acceptProposal}
               index={index}
               user={user}
+              goToGames={goToGames}
             />
           )}
         </>
@@ -122,10 +130,11 @@ export default function LobbyPage({user}) {
   )
 }
 
-function Proposal({proposal, acceptProposal, index, user}) {
+function Proposal({proposal, acceptProposal, index, user, goToGames}) {
   const handleClick = (event) => {
     const {index, name} = event.target.dataset
     acceptProposal(index, name)
+    goToGames()
   }
   
   return (

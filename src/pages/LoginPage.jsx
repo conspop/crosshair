@@ -32,6 +32,7 @@ class LoginForm extends React.Component {
   render() {
     return (
       <>
+        <h1>Login</h1>
         <label style={{marginTop: '10px'}}>Username</label>
         <input 
           name='username'

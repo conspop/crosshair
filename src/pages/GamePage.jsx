@@ -153,7 +153,7 @@ export default function GamePage({user, logout}) {
     <>
       <div className='game-container'>
         <div style={{width: '100%', height: '5vh', display: 'flex', justifyContent: 'space-evenly'}}>
-          <ResignButton handleResignGame={handleResignGame} cardsPlayed={cardsPlayed} />
+          {!scoreboard && !resign ? <ResignButton handleResignGame={handleResignGame} cardsPlayed={cardsPlayed} /> : ''}
         </div>
         <Turn user={user} player={player} turn={turn} opponent={opponent} />
         <Board board={board} player={player} handlePlayCard={handlePlayCard} lastPlayed={lastPlayed} />

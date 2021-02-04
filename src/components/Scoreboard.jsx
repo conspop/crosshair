@@ -2,26 +2,22 @@ import React from 'react'
 
 export default function Scoreboard({scoreboard, player, user, opponent}) {
   return (
-    <>
-      <table>
-        <tbody>
-          <tr>
-            <th>Hand</th>
-            <th>{player ? user.username : opponent }</th>
-            <th>{player ? opponent : user.username}</th>
-          </tr>
-          {[0,1,2,3,4].map(handNumber => {
-            return (
-              <ScoreboardLine
-                handNumber={handNumber}
-                playerOneHand={scoreboard.playerOne[handNumber]}
-                playerTwoHand={scoreboard.playerTwo[handNumber]}
-              />
-            )
-          })}
-        </tbody>
-      </table>
-    </>
+    <div className='scoreboard'>
+      <div className='scoreboard-line'>
+        <div className='scoreboard-title'>{player ? user.username : opponent}</div>
+        <div className='scoreboard-title'>{player ? opponent : user.username}</div>
+      </div>
+      
+      {[0,1,2,3,4].map(handNumber => {
+        return (
+          <ScoreboardLine
+            handNumber={handNumber}
+            playerOneHand={scoreboard.playerOne[handNumber]}
+            playerTwoHand={scoreboard.playerTwo[handNumber]}
+          />
+        )
+      })}
+    </div>
   )
 }
 
@@ -47,26 +43,10 @@ function ScoreboardLine({handNumber, playerOneHand, playerTwoHand}) {
   }
 
   return (
-    <tr>
-      <ScoreboardHandTitle color={handColors[handNumber]} />
+    <div className='scoreboard-line' style={{backgroundColor: handColors[handNumber]}}>
       <ScoreboardHand hand={playerOneHand} isWin={isPlayerOneWinner} />
       <ScoreboardHand hand={playerTwoHand} isWin={!isPlayerOneWinner} />
-    </tr>
-  )
-}
-
-function ScoreboardHandTitle({color}) {
-  const titleStyle = {
-    color: color,
-    fontWeight: 'bold'
-  }
-  
-  return (
-    <td
-      style={titleStyle}
-    >
-      {color}
-    </td>
+    </div>
   )
 }
 

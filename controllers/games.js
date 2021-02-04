@@ -132,6 +132,7 @@ async function playCard(req, res) {
   }
   game.set({board: req.body.board})
   game.lastPlayed = req.body.lastPlayed
+  game.lastPlayTime = new Date()
   game.turn = !game.turn
   if (!game.board.includes('')) {
     game.scoreboard = buildScoreboard(game)
@@ -445,7 +446,8 @@ function buildResultObject(playerOldELO, opponentOldELO, kFactor, opponent, isWi
     beginningELO: playerOldELO,
     opponent,
     isWin,
-    endingELO: calculateNewELO(playerOldELO, opponentOldELO, kFactor, isWin)
+    endingELO: calculateNewELO(playerOldELO, opponentOldELO, kFactor, isWin),
+    date: new Date()
   }
   return resultObject
 }

@@ -8,6 +8,7 @@
 
 .created-game-list {
   width: calc(100%-1rem);
+  height: 2rem;
   background-color: rgba(191, 191, 191, 0.5);
   border-radius: 2.5px;
   display: grid;
@@ -15,6 +16,7 @@
   padding: .5rem;
   align-content: center;
   row-gap: 1rem;
+  margin-bottom: .5rem;
 }
 
 .created-game-list button {
@@ -24,6 +26,7 @@
   font-weight: bold;
   color: white;
   border-radius: 2.5px;
+  height: 1.5rem;
 }
 
 .create-game-button {

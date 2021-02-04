@@ -41,6 +41,7 @@ export default function Games({user}) {
 
   return (
     <div>
+      <h1>Games</h1>
       {games ? <GamesList games={games} user={user} /> : ''}
     </div>
   )
@@ -49,17 +50,17 @@ export default function Games({user}) {
 function GamesList({games, user}) {
   return (
     <div className='games-list-container'>
-      <h2>Your Turn</h2>
+      <h3>Your Turn</h3>
       <table>
         {games.filter(game => (game.scoreboard === null) && (!game.resign) && (user.username === game.playerOneName) === game.turn)
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
-      <h2>Their Turn</h2>
+      <h3>Their Turn</h3>
       <table>
         {games.filter(game => (game.scoreboard === null) && (!game.resign) && (user.username === game.playerOneName) !== game.turn)
         .map(game => <GamesListItem game={game} user={user} />)}
       </table>
-      <h2>Completed</h2>
+      <h3>Completed</h3>
       <table>
         {games.filter(game => (game.scoreboard !== null) || (game.resign)).reverse()
         .map(game => <GamesListItem game={game} user={user} />)}

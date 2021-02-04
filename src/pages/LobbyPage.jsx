@@ -98,10 +98,10 @@ export default function LobbyPage({user}) {
     <>
       <div className='lobby-container'>
         <h1>Lobby</h1>
-        <p>If you're looking for a game, join one of the games that another player created below. If their aren't any, create one and check back in a little bit. You'll be playing in no time.</p>
+        <p>If you're looking for a game, join one below. If there aren't any, create one and check back in a little bit. You'll be playing in no time.</p>
         {proposals.length > 0 
         ?
-        <div className='created-game-list'>
+        <>
           {proposals.map((proposal, index) => 
             <Proposal 
               proposal={proposal} 
@@ -110,7 +110,7 @@ export default function LobbyPage({user}) {
               user={user}
             />
           )}
-        </div>
+        </>
         :
         ''
         }
@@ -129,17 +129,20 @@ function Proposal({proposal, acceptProposal, index, user}) {
   }
   
   return (
-    <>
+    <div className='created-game-list'>
       <div>{proposal.name} ({proposal.endingELO})</div>
-      <div>
-        <button 
-          data-name={proposal.name}
-          data-index={index} 
-          onClick={handleClick}
-        >
-          Join
-        </button>
-      </div>
-    </>
+      {proposal.name === user.username ?
+        <div></div> :
+        <div>
+          <button 
+            data-name={proposal.name}
+            data-index={index} 
+            onClick={handleClick}
+          >
+            Join
+          </button>
+        </div>
+      }
+    </div>
   )
 }

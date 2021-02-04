@@ -28,6 +28,7 @@ export default function GamePage({user, logout}) {
       }
     })
     .then(response => {
+      console.log(response.data)
       const dataPlayer = response.data.game.playerOneName === user.username ? true : false
       setId(response.data.game._id)
       setBoard(response.data.game.board)

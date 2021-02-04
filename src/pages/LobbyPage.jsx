@@ -130,7 +130,7 @@ function Proposal({proposal, acceptProposal, index, user}) {
   
   return (
     <div className='created-game-list'>
-      <div>{proposal.name} ({proposal.endingELO})</div>
+      <div><strong>{proposal.name}</strong> ({proposal.endingELO})</div>
       {proposal.name === user.username ?
         <div></div> :
         <div>

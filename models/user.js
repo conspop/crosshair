@@ -16,7 +16,8 @@ const userSchema = new Schema({
     beginningELO: Number,
     opponent: String,
     isWin: Boolean,
-    endingELO: Number
+    endingELO: Number,
+    date: Date
   }],
   version: String
 });

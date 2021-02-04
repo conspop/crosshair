@@ -83,7 +83,7 @@ function OpponentAndTime({game, user, group}) {
   const opponent = playerOneName === user.username ? playerTwoName : playerOneName
   
   return (
-    <div style={{alignSelf: 'center'}}><strong>{opponent}</strong> (<Time game={game} />)</div>
+    <div style={{alignSelf: 'center'}}><strong>{opponent}</strong> <Time game={game} /></div>
   )
 }
 
@@ -92,10 +92,12 @@ function Time({game}) {
   const lastPlayTime = moment(game.lastPlayTime)
   let daysSinceLastPlay = currentTime.diff(lastPlayTime, 'days')
   let daysSinceLastPlayFormatted
-  if (daysSinceLastPlay < 1) {
-    daysSinceLastPlayFormatted = '<1 day'
+  if (!game.lastPlayTime) {
+    daysSinceLastPlayFormatted = '(start clock ->)'
+  } else if (daysSinceLastPlay < 1) {
+    daysSinceLastPlayFormatted = ''
   } else {
-    daysSinceLastPlayFormatted = `${daysSinceLastPlay} days`
+    daysSinceLastPlayFormatted = `(${daysSinceLastPlay} days)`
   }
   return daysSinceLastPlayFormatted
 }
@@ -103,10 +105,56 @@ function Time({game}) {
 function Completed({game, user, group}) {
   return (
     <div className='games-list-item'>
-      <OpponentAndTime game={game} user={user} />
+      {/* <OpponentAndTime game={game} user={user} /> */}
+      <WinOrLoss game={game} user={user} />
       <GameLink game={game} user={user} group={group} />
     </div>
   )
+}
+
+function WinOrLoss({game, user}) {
+  const isPlayerOne = game.playerOneName === user.username
+  const opponent = game.playerOneName === user.username ? game.playerTwoName : game.playerOneName
+  let isPlayerOneWinner = false
+  if (game.resign) {
+    if (game.resign !== game.playerOneName) {
+      isPlayerOneWinner = true
+    }
+  } else {
+    const {playerOne, playerTwo} = game.scoreboard
+    let playerOneWins = 0
+    for (let hand = 0; hand < 5; hand++) {
+      for (let index = 0; index <= 6; index++ ) {
+        if (playerOne[hand][index] > playerTwo[hand][index]) {
+          playerOneWins ++
+          break
+        } else if (playerOne[index] < playerTwo[index]) {
+          break
+        }
+      }
+    }
+    console.log(playerOneWins)
+    if (playerOneWins >= 3) {isPlayerOneWinner = true}
+  }
+  if (isPlayerOne === isPlayerOneWinner) {
+    return (
+      <div style={{alignSelf: 'center'}}><strong>W vs. {opponent}</strong> <ResultType game={game} /></div>
+    )
+  } else {
+    return (
+      <div style={{alignSelf: 'center'}}><strong>L vs. {opponent}</strong> <ResultType game={game} /></div>
+    )
+  }
+}
+
+function ResultType({game}) {
+  if (game.resign) {
+    return '(Resigned)'
+  } else if (game.forfeit) {
+    return '(Forfeit)'
+  } else {
+    return ''
+  }
 }
 
 function Status({game, user}) {
@@ -115,7 +163,7 @@ function Status({game, user}) {
   const opponent = playerOneName === user.username ? playerTwoName : playerOneName
 
   if (!board.includes('')) {
-    return 'Complete'
+    return 'View'
   } else {
     if (player === turn) {
       return 'Your Turn'
@@ -135,6 +183,19 @@ function GameLink({game, user, group}) {
     buttonStyle = {
       backgroundColor: 'red'
     }
+  } else if (group === 'Completed') {
+    buttonStyle = {
+      backgroundColor: 'blue'
+    }
+  }
+
+  let buttonText
+  if (group === 'Your Turn') {
+    buttonText = 'Your Turn'
+  } else if (group === 'Their Turn') {
+    buttonText = 'Their Turn'
+  } else if (group === 'Completed') {
+    buttonText = 'View'
   }
 
   return (
@@ -143,7 +204,7 @@ function GameLink({game, user, group}) {
       key={game._id}
       className='game-link-button' 
       style={buttonStyle}
-    ><Status game={game} user={user} />
+    >{buttonText}
     </Link>    
   )
 }

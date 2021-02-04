@@ -12,7 +12,8 @@ const gameSchema = new Schema({
   lastPlayed: Number,
   scoreboard: Schema.Types.Mixed,
   resign: String,
-  lastPlayTime: Date
+  lastPlayTime: Date,
+  winner: String
 });
 
 module.exports = mongoose.model('Game', gameSchema);

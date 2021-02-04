@@ -27,12 +27,16 @@ async function updateVersion(req, res) {
 }
 
 async function index(req, res) {
-  const {games} = await User.findById(req.user._id).populate('games')
-  res.json(games)
+  const user = await User.findById(req.user._id).populate('games')
+  res.json(user.games)
 }
 
 async function show(req, res) {
   const game = await Game.findById(req.params.gameId)
+  if (!game.lastPlayTime) {
+    game.lastPlayTime = new Date()
+    await game.save()
+  }
   res.json({game, version: VERSION})
 }
 
@@ -136,7 +140,7 @@ async function playCard(req, res) {
   game.turn = !game.turn
   if (!game.board.includes('')) {
     game.scoreboard = buildScoreboard(game)
-    const winnerAndLoser = chooseWinnerAndLoser(game.scoreboard, game.playerOneName, game.playerTwoName)
+    const winnerAndLoser = chooseWinnerAndLoser(game._id, game.scoreboard, game.playerOneName, game.playerTwoName)
     await recordResults(winnerAndLoser)
   }
   await game.save()
@@ -392,7 +396,7 @@ function areSameNumber(set) {
   return set.every(card => card.number === set[0].number)
 }
 
-function chooseWinnerAndLoser(scoreboard, playerOne, playerTwo) {
+function chooseWinnerAndLoser(gameId, scoreboard, playerOne, playerTwo) {
   let playerOneWins = 0
   let playerTwoWins = 0
   for (let hand = 0; hand < 5; hand++) {
